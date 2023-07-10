@@ -7,9 +7,9 @@ namespace ugr
     }
     BOOL UgrCGE::IsInit()
     {
-        return (m_handleConsole == INVALID_HANDLE_VALUE) ? TRUE : FALSE;
+        return (m_handleConsole == INVALID_HANDLE_VALUE) ? FALSE : TRUE;
     }
-    void UgrCGE::Freeze(INT fl)
+    VOID UgrCGE::Freeze(INT fl)
     {
         switch (fl)
         {
@@ -23,7 +23,7 @@ namespace ugr
             break;
         }
     }
-    void UgrCGE::RenderShape(Shape& shape)
+    VOID UgrCGE::RenderShape(Shape& shape)
     {
         //Check RenderShape Type to Render
         if (shape.defShape == "Rect")
@@ -49,7 +49,7 @@ namespace ugr
     BOOL UgrCGE::CreateConsoleBufferWindow(Vector2i CWS, Vector2i fontSize)
     {
         //Check if handleConsole is init
-        if (this->IsInit())
+        if (!this->IsInit())
             MessageBox(NULL, L"Bad Handle", L"Error", MB_ICONERROR | MB_OK);
         
         //Set screen size relative to the given parameter
