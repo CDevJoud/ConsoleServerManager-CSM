@@ -6,14 +6,14 @@ namespace ugr
         this->m_bufferScreen = re.buffer;
         this->m_handleConsole = re.hConsole;
         this->m_screen = re.screen;
-        this->m_rectConsoleWindow = re.m_rectConsoleWindow;
+        this->m_rectConsoleWindow = re.rectWin;
     }
     void Renderer::InitRenderer(RenderElements re)
     {
         this->m_bufferScreen = re.buffer;
         this->m_handleConsole = re.hConsole;
         this->m_screen = re.screen;
-        this->m_rectConsoleWindow = re.m_rectConsoleWindow;
+        this->m_rectConsoleWindow = re.rectWin;
     }
 	void Renderer::RenderPixelPixel(bool sw)
 	{
