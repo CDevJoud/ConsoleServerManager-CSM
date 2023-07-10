@@ -8,7 +8,6 @@ int main()
 	CGE.InitConsoleWindow();
 	CGE.CreateConsoleBufferWindow(Vector2i(240, 64));
 
-
 	//If the Instance Init successfully the application loop will start
 	while (CGE.IsInit())
 	{
