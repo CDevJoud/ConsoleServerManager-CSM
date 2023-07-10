@@ -10,7 +10,7 @@ namespace ugr
 		CHAR_INFO* buffer = nullptr;
 		HANDLE hConsole = nullptr;
 		Vector2i screen = Vector2i(0, 0);
-		SMALL_RECT m_rectConsoleWindow;
+		SMALL_RECT rectWin;
 	};
 	class Renderer
 	{
