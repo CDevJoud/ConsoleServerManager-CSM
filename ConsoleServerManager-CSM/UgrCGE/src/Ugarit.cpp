@@ -7,7 +7,7 @@ namespace ugr
     }
     BOOL UgrCGE::IsInit()
     {
-        return (m_handleConsole) ? TRUE : FALSE;
+        return (m_handleConsole == INVALID_HANDLE_VALUE) ? TRUE : FALSE;
     }
     void UgrCGE::Freeze(INT fl)
     {
@@ -25,6 +25,7 @@ namespace ugr
     }
     void UgrCGE::RenderShape(Shape& shape)
     {
+        //Check RenderShape Type to Render
         if (shape.defShape == "Rect")
         {
             Vector2i p[4];
@@ -47,9 +48,11 @@ namespace ugr
     }
     BOOL UgrCGE::CreateConsoleBufferWindow(Vector2i CWS, Vector2i fontSize)
     {
-        if (m_handleConsole == INVALID_HANDLE_VALUE)
+        //Check if handleConsole is init
+        if (this->IsInit())
             MessageBox(NULL, L"Bad Handle", L"Error", MB_ICONERROR | MB_OK);
-
+        
+        //Set screen size relative to the given parameter
         this->m_screen = CWS;
 
         this->m_rectConsoleWindow = { 0, 0, 1, 1 };
@@ -94,6 +97,7 @@ namespace ugr
         this->m_bufferScreen = new CHAR_INFO[this->m_screen.x * this->m_screen.y];
         ZeroMemory(this->m_bufferScreen, sizeof(CHAR_INFO) * this->m_screen.x * this->m_screen.y);
 
+        //Init RenderElements and Renderer
         re.buffer = this->m_bufferScreen;
         re.hConsole = this->m_handleConsole;
         re.rectWin = this->m_rectConsoleWindow;
