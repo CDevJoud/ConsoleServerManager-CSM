@@ -96,7 +96,7 @@ namespace ugr
 
         re.buffer = this->m_bufferScreen;
         re.hConsole = this->m_handleConsole;
-        re.m_rectConsoleWindow = this->m_rectConsoleWindow;
+        re.rectWin = this->m_rectConsoleWindow;
         re.screen = this->m_screen;
         this->InitRenderer(re);
         return 0;
