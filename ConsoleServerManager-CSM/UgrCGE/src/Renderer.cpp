@@ -8,22 +8,22 @@ namespace ugr
         this->m_screen = re.screen;
         this->m_rectConsoleWindow = re.rectWin;
     }
-    void Renderer::InitRenderer(RenderElements re)
+	VOID Renderer::InitRenderer(RenderElements re)
     {
         this->m_bufferScreen = re.buffer;
         this->m_handleConsole = re.hConsole;
         this->m_screen = re.screen;
         this->m_rectConsoleWindow = re.rectWin;
     }
-	void Renderer::RenderPixelPixel(bool sw)
+	VOID Renderer::RenderPixelPixel(BOOL sw)
 	{
 		this->RePP = sw;
 	}
-	void Renderer::SetRenderingCoolDown(DWORD millisecond)
+	VOID Renderer::SetRenderingCoolDown(DWORD millisecond)
 	{
 		this->millisecond = millisecond;
 	}
-	void Renderer::SetPixel(Vector2i c, SHORT sur, SHORT col)
+	VOID Renderer::SetPixel(Vector2i c, SHORT sur, SHORT col)
     {
         if (c.x >= 0 && c.x < this->m_screen.x && c.y >= 0 && c.y < this->m_screen.y)
         {
@@ -36,7 +36,7 @@ namespace ugr
 			}
         }
     }
-    void Renderer::Fill(Vector2i p1, Vector2i p2, SHORT surface, SHORT color)
+	VOID Renderer::Fill(Vector2i p1, Vector2i p2, SHORT surface, SHORT color)
     {
         FindClip(p1);
         FindClip(p2);
@@ -44,7 +44,7 @@ namespace ugr
 			for (INT y = p1.y; y < p2.y; y++)
 				SetPixel(Vector2i(x, y), surface, color);
     }
-    void Renderer::RenderLine(Vector2i p1, Vector2i p2, SHORT sur, SHORT col)
+	VOID Renderer::RenderLine(Vector2i p1, Vector2i p2, SHORT sur, SHORT col)
     {
 		INT x1 = p1.x; INT x2 = p2.x; INT y1 = p1.y; INT y2 = p2.y;
 
@@ -108,13 +108,13 @@ namespace ugr
 			}
 		}
     }
-	void Renderer::RenderTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT sur, SHORT col)
+	VOID Renderer::RenderTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT sur, SHORT col)
 	{
 		RenderLine(p1, p2, sur, col);
 		RenderLine(p2, p3, sur, col);
 		RenderLine(p3, p1, sur, col);
 	}
-	void Renderer::RenderTriangle(FLOAT* p, SHORT sur, SHORT col)
+	VOID Renderer::RenderTriangle(FLOAT* p, SHORT sur, SHORT col)
 	{
 		Vector2i p1(p[0], p[1]);
 		Vector2i p2(p[2], p[3]);
@@ -122,53 +122,53 @@ namespace ugr
 
 		RenderTriangle(p1, p2, p3, sur, col);
 	}
-	void Renderer::RasterizeTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT sur, SHORT col)
+	VOID Renderer::RasterizeTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT sur, SHORT col)
 	{
-		int x1 = p1.x;
-		int y1 = p1.y;
-
-		int x2 = p2.x;
-		int y2 = p2.y;
+		INT x1 = p1.x;
+		INT y1 = p1.y;
 		
-		int x3 = p3.x;
-		int y3 = p3.y;
-		auto SWAP = [](int& x, int& y) { int t = x; x = y; y = t; };
-		auto drawline = [&](int sx, int ex, int ny) { for (int i = sx; i <= ex; i++) SetPixel(Vector2i(i, ny), sur, col); };
+		INT x2 = p2.x;
+		INT y2 = p2.y;
+		
+		INT x3 = p3.x;
+		INT y3 = p3.y;
+		auto SWAP = [](INT& x, INT& y) { INT t = x; x = y; y = t; };
+		auto drawline = [&](INT sx, INT ex, INT ny) { for (INT i = sx; i <= ex; i++) SetPixel(Vector2i(i, ny), sur, col); };
 
-		int t1x, t2x, y, minx, maxx, t1xp, t2xp;
+		INT t1x, t2x, y, minx, maxx, t1xp, t2xp;
 		bool changed1 = false;
 		bool changed2 = false;
-		int signx1, signx2, dx1, dy1, dx2, dy2;
-		int e1, e2;
+		INT signx1, signx2, dx1, dy1, dx2, dy2;
+		INT e1, e2;
 		// Sort vertices
 		if (y1 > y2) { SWAP(y1, y2); SWAP(x1, x2); }
 		if (y1 > y3) { SWAP(y1, y3); SWAP(x1, x3); }
 		if (y2 > y3) { SWAP(y2, y3); SWAP(x2, x3); }
 
-		t1x = t2x = x1; y = y1;   // Starting points
-		dx1 = (int)(x2 - x1); if (dx1 < 0) { dx1 = -dx1; signx1 = -1; }
+		t1x = t2x = x1; y = y1;   // Starting poINTs
+		dx1 = (INT)(x2 - x1); if (dx1 < 0) { dx1 = -dx1; signx1 = -1; }
 		else signx1 = 1;
-		dy1 = (int)(y2 - y1);
+		dy1 = (INT)(y2 - y1);
 
-		dx2 = (int)(x3 - x1); if (dx2 < 0) { dx2 = -dx2; signx2 = -1; }
+		dx2 = (INT)(x3 - x1); if (dx2 < 0) { dx2 = -dx2; signx2 = -1; }
 		else signx2 = 1;
-		dy2 = (int)(y3 - y1);
+		dy2 = (INT)(y3 - y1);
 
 		if (dy1 > dx1) {   // swap values
 			SWAP(dx1, dy1);
-			changed1 = true;
+			changed1 = TRUE;
 		}
 		if (dy2 > dx2) {   // swap values
 			SWAP(dy2, dx2);
-			changed2 = true;
+			changed2 = TRUE;
 		}
 
-		e2 = (int)(dx2 >> 1);
+		e2 = (INT)(dx2 >> 1);
 		// Flat top, just process the second half
 		if (y1 == y2) goto next;
-		e1 = (int)(dx1 >> 1);
+		e1 = (INT)(dx1 >> 1);
 
-		for (int i = 0; i < dx1;) {
+		for (INT i = 0; i < dx1;) {
 			t1xp = 0; t2xp = 0;
 			if (t1x < t2x) { minx = t1x; maxx = t2x; }
 			else { minx = t2x; maxx = t1x; }
@@ -200,7 +200,7 @@ namespace ugr
 		next2:
 			if (minx > t1x) minx = t1x; if (minx > t2x) minx = t2x;
 			if (maxx < t1x) maxx = t1x; if (maxx < t2x) maxx = t2x;
-			drawline(minx, maxx, y);    // Draw line from min to max points found on the y
+			drawline(minx, maxx, y);    // Draw line from min to max poINTs found on the y
 										 // Now increase y
 			if (!changed1) t1x += signx1;
 			t1x += t1xp;
@@ -212,20 +212,20 @@ namespace ugr
 		}
 	next:
 		// Second half
-		dx1 = (int)(x3 - x2); if (dx1 < 0) { dx1 = -dx1; signx1 = -1; }
+		dx1 = (INT)(x3 - x2); if (dx1 < 0) { dx1 = -dx1; signx1 = -1; }
 		else signx1 = 1;
-		dy1 = (int)(y3 - y2);
+		dy1 = (INT)(y3 - y2);
 		t1x = x2;
 
 		if (dy1 > dx1) {   // swap values
 			SWAP(dy1, dx1);
-			changed1 = true;
+			changed1 = TRUE;
 		}
-		else changed1 = false;
+		else changed1 = FALSE;
 
-		e1 = (int)(dx1 >> 1);
+		e1 = (INT)(dx1 >> 1);
 
-		for (int i = 0; i <= dx1; i++) {
+		for (INT i = 0; i <= dx1; i++) {
 			t1xp = 0; t2xp = 0;
 			if (t1x < t2x) { minx = t1x; maxx = t2x; }
 			else { minx = t2x; maxx = t1x; }
@@ -266,7 +266,7 @@ namespace ugr
 			if (y > y3) return;
 		}
 	}
-	void Renderer::RenderCircle(Vector2i p1, INT radius, SHORT sur, SHORT col)
+	VOID Renderer::RenderCircle(Vector2i p1, INT radius, SHORT sur, SHORT col)
 	{
 		INT xc = p1.x;
 		INT yc = p1.y;
@@ -289,19 +289,19 @@ namespace ugr
 			else p += 4 * (x++ - y--) + 10;
 		}
 	}
-	void Renderer::RasterizeCircle(Vector2i p1, INT r, SHORT sur, SHORT col)
+	VOID Renderer::RasterizeCircle(Vector2i p1, INT r, SHORT sur, SHORT col)
 	{
-		int yc = p1.y;
-		int xc = p1.x;
+		INT yc = p1.y;
+		INT xc = p1.x;
 		// Taken from wikipedia
-		int x = 0;
-		int y = r;
-		int p = 3 - 2 * r;
+		INT x = 0;
+		INT y = r;
+		INT p = 3 - 2 * r;
 		if (!r) return;
 
-		auto drawline = [&](int sx, int ex, int ny)
+		auto drawline = [&](INT sx, INT ex, INT ny)
 		{
-			for (int i = sx; i <= ex; i++)
+			for (INT i = sx; i <= ex; i++)
 				SetPixel(Vector2i(i, ny), sur, col);
 		};
 
@@ -316,19 +316,19 @@ namespace ugr
 			else p += 4 * (x++ - y--) + 10;
 		}
 	}
-	void Renderer::RenderQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT sur, SHORT col)
+	VOID Renderer::RenderQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT sur, SHORT col)
 	{
 		this->RenderLine(p1, p2, sur, col);
 		this->RenderLine(p2, p3, sur, col);
 		this->RenderLine(p3, p4, sur, col);
 		this->RenderLine(p4, p1, sur, col);
 	}
-	void Renderer::RasterizeQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT sur, SHORT col)
+	VOID Renderer::RasterizeQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT sur, SHORT col)
 	{
 		this->RasterizeTriangle(p1, p2, p3, sur, col);
 		this->RasterizeTriangle(p1, p4, p3, sur, col + 2);
 	}
-	void Renderer::RenderQuad(Vector2i size, Vector2i pos, SHORT sur, SHORT col)
+	VOID Renderer::RenderQuad(Vector2i size, Vector2i pos, SHORT sur, SHORT col)
 	{
 		Vector2i p[4];
 		p[0] = Vector2i(0, 0);
@@ -341,7 +341,7 @@ namespace ugr
 		this->RenderLine(p[2] + pos, p[3] + pos, sur, col);
 		this->RenderLine(p[3] + pos, p[0] + pos, sur, col);
 	}
-	void Renderer::RasterizeQuad(Vector2i size, Vector2i pos, SHORT sur, SHORT col)
+	VOID Renderer::RasterizeQuad(Vector2i size, Vector2i pos, SHORT sur, SHORT col)
 	{
 		Vector2i p[4];
 		p[0] = Vector2i(0, 0);
@@ -351,7 +351,7 @@ namespace ugr
 
 		this->Fill(p[0] + pos, p[2] + pos, sur, col);
 	}
-	void Renderer::RenderText(Vector2i pos,LPCWSTR str, SHORT color)
+	VOID Renderer::RenderText(Vector2i pos,LPCWSTR str, SHORT color)
 	{
 		for (INT i = 0; i < lstrlenW(str); i++)
 		{
@@ -365,18 +365,18 @@ namespace ugr
 			}
 		}
 	}
-    void Renderer::FindClip(Vector2i& p)
+    VOID Renderer::FindClip(Vector2i& p)
     {
         if (p.x < 0) p.x = 0;
         if (p.x >= this->m_screen.x) p.x = this->m_screen.x;
         if (p.y < 0) p.y = 0;
         if (p.y >= this->m_screen.y) p.y = this->m_screen.y;
     }
-	void Renderer::ClearScreen(SHORT sur, SHORT col)
+	VOID Renderer::ClearScreen(SHORT sur, SHORT col)
 	{
 		this->Fill(ugr::Vector2i(0, 0), this->m_screen, sur, col);
 	}
-	void Renderer::Display()
+	VOID Renderer::Display()
     {
         WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (short)this->m_screen.x, (short)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
     }

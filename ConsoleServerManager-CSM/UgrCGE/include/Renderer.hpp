@@ -7,10 +7,10 @@ namespace ugr
 {
 	struct RenderElements
 	{
-		CHAR_INFO* buffer = nullptr;
-		HANDLE hConsole = nullptr;
+		CHAR_INFO* buffer = NULL;
+		HANDLE hConsole = NULL;
 		Vector2i screen = Vector2i(0, 0);
-		SMALL_RECT rectWin;
+		SMALL_RECT rectWin = { 0, 0, 0, 0 };
 	};
 	class Renderer
 	{
@@ -21,41 +21,41 @@ namespace ugr
 		void InitRenderer(RenderElements RE);
 
 		//Rendering Functions
-		void RenderPixelPixel(bool sw);
-		void SetRenderingCoolDown(DWORD millisecond);
-		void SetPixel(Vector2i cordinates, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderPixelPixel(BOOL sw);
+		VOID SetRenderingCoolDown(DWORD millisecond);
+		VOID SetPixel(Vector2i cordinates, SHORT surface = 0x2588, SHORT col = 0x000F);
 		
 
-		void RenderLine(Vector2i p1, Vector2i p2, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderLine(Vector2i p1, Vector2i p2, SHORT surface = 0x2588, SHORT col = 0x000F);
 
-		void RenderTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT surface = 0x2588, SHORT col = 0x000F);
-		void RenderTriangle(FLOAT* p_Array, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderTriangle(FLOAT* p_Array, SHORT surface = 0x2588, SHORT col = 0x000F);
 
-		void RasterizeTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RasterizeTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT surface = 0x2588, SHORT col = 0x000F);
 		
-		void RenderCircle(Vector2i p1, INT radius, SHORT surface = 0x2588, SHORT col = 0x000F);
-		void RasterizeCircle(Vector2i p1, INT radius, SHORT surface = 0x2588, SHORT col = 0x00F);
+		VOID RenderCircle(Vector2i p1, INT radius, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RasterizeCircle(Vector2i p1, INT radius, SHORT surface = 0x2588, SHORT col = 0x00F);
 
-		void RenderQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT surface = 0x2588, SHORT col = 0x000F);
-		void RasterizeQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT surface = 0x2588, SHORT col = 0x000F);
-		void RenderQuad(Vector2i size, Vector2i pos, SHORT surface = 0x2588, SHORT col = 0x000F);
-		void RasterizeQuad(Vector2i size, Vector2i pos, SHORT surface = 0x2588, SHORT col = 0x000F);
-		void RenderText(Vector2i pos,LPCWSTR str, SHORT color = 0x000F);
+		VOID RenderQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RasterizeQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderQuad(Vector2i size, Vector2i pos, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RasterizeQuad(Vector2i size, Vector2i pos, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderText(Vector2i pos,LPCWSTR str, SHORT color = 0x000F);
 
 
 		//Caclulating Functions
 
-		void FindClip(Vector2i& p);
+		VOID FindClip(Vector2i& p);
 
-		void ClearScreen(SHORT surface = 0x2588, SHORT color = 0x0000);
-		void Display();
+		VOID ClearScreen(SHORT surface = 0x2588, SHORT color = 0x0000);
+		VOID Display();
 	private:
 		void Fill(Vector2i p1, Vector2i p2, SHORT surface = 0x2588, SHORT col = 0x000F);
-		CHAR_INFO* m_bufferScreen = nullptr;
+		CHAR_INFO* m_bufferScreen = NULL;
 		Vector2i m_screen = Vector2i(0, 0);
-		HANDLE m_handleConsole = nullptr;
+		HANDLE m_handleConsole = NULL;
 		SMALL_RECT m_rectConsoleWindow;
-		bool RePP = false;
+		BOOL RePP = TRUE;
 		DWORD millisecond = 0;
 	};
 }
