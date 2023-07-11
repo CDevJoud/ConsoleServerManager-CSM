@@ -65,6 +65,44 @@ namespace ugr
             this->RasterizeTriangle(p[0] + pos, p[1] + pos, p[2] + pos, shape.GetChar(), shape.GetColor());
         }
     }
+    VOID UgrCGE::Render(Panel& panel)
+    {
+        Vector2i p1(panel.m_vecPosition);
+        Vector2i p2(panel.m_vecPosition + panel.m_vecBufferSize);
+
+        for (INT x = p1.x; x < p2.x; x++)
+            for (INT y = p1.y; y < p2.y; y++)
+            {
+                INT py = (y - p1.y);
+                INT px = (x - p1.x);
+                auto surface = panel.m_Buffer[py * panel.m_vecBufferSize.x + px].Char.UnicodeChar;
+                auto color = panel.m_Buffer[py * panel.m_vecBufferSize.x + px].Attributes;
+                SetPixel(Vector2i(x, y), surface, color);
+            }
+        auto pos = panel.m_vecPosition;
+        auto size = panel.m_vecBufferSize;
+
+        //Draw The Border
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, 0xAF);
+
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, 0xAF);
+
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, 0xAF);
+
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, 0xAF);
+        //Set Corner style
+        //Top
+        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, 0x0F | 0xA0);
+
+        //Right
+        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, 0xAF);
+
+        //Left
+        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, 0XAF);
+
+        //Bottom
+        SetPixel(pos + size, 0x256F, 0XAF);
+    }
     BOOL UgrCGE::InitConsoleWindow()
     {
         this->m_handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);

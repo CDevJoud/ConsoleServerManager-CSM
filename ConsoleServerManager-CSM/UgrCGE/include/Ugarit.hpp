@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "Renderer.hpp"
 #include "Shape.hpp"
+#include "Panel.hpp"
 namespace ugr
 {
 	typedef Vector2<int> Vector2i;
@@ -14,6 +15,7 @@ namespace ugr
 		BOOL IsInit();
 		VOID Freeze(INT FreezeLevel);
 		VOID Render(Shape& shape);
+		VOID Render(Panel& panel);
 	private:
 		Vector2i m_screen;
 		HANDLE m_handleConsole;
