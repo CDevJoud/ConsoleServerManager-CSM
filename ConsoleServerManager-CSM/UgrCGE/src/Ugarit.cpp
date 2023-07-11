@@ -25,7 +25,7 @@ namespace ugr
     }
     VOID UgrCGE::Render(Shape& shape)
     {
-        //Check RenderShape Type to Render
+        //Check Shapes Type to Render
         if (shape.GetShapeType() == "Shape.Rect.Line")
         {
             Vector2i p[4];
@@ -39,6 +39,18 @@ namespace ugr
         if (shape.GetShapeType() == "Shape.Rect.Fill")
         {
             this->RasterizeQuad(shape.GetSize(), shape.GetPosition(), shape.GetChar(), shape.GetColor());
+        }
+        if (shape.GetShapeType() == "Shape.Quad.Line")
+        {
+            auto& p = shape.GetVertexArray();
+            auto pos = shape.GetPosition();
+            this->RenderQuad(p[0] + pos, p[1] + pos, p[2] + pos, p[3] + pos, shape.GetChar(), shape.GetColor());
+        }
+        if (shape.GetShapeType() == "Shape.Quad.Fill")
+        {
+            auto& p = shape.GetVertexArray();
+            auto pos = shape.GetPosition();
+            this->RasterizeQuad(p[0] + pos, p[1] + pos, p[2] + pos, p[3] + pos, shape.GetChar(), shape.GetColor());
         }
         if (shape.GetShapeType() == "Shape.Triangle.Line")
         {
