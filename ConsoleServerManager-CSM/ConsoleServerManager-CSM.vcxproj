@@ -143,12 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UgrCGE\src\Panel.cpp" />
     <ClCompile Include="UgrCGE\src\Renderer.cpp" />
     <ClCompile Include="UgrCGE\src\Shape.cpp" />
     <ClCompile Include="UgrCGE\src\Ugarit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.hpp" />
+    <ClInclude Include="UgrCGE\include\Panel.hpp" />
     <ClInclude Include="UgrCGE\include\Renderer.hpp" />
     <ClInclude Include="UgrCGE\include\Shape.hpp" />
     <ClInclude Include="UgrCGE\include\Ugarit.hpp" />
