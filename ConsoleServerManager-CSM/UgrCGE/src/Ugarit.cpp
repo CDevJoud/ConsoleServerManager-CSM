@@ -23,21 +23,34 @@ namespace ugr
             break;
         }
     }
-    VOID UgrCGE::RenderShape(Shape& shape)
+    VOID UgrCGE::Render(Shape& shape)
     {
         //Check RenderShape Type to Render
-        if (shape.defShape == "Rect")
+        if (shape.GetShapeType() == "Shape.Rect.Line")
         {
             Vector2i p[4];
             p[0] = Vector2i(0, 0);
-            p[1].x = shape.size.x;
-            p[2] = shape.size;
-            p[3].y = shape.size.y;
-            this->RenderQuad(p[0] + shape.pos, p[1] + shape.pos, p[2] + shape.pos, p[3] + shape.pos, shape.surface, shape.color);
+            p[1].x = shape.GetSize().x;
+            p[2] = shape.GetSize();
+            p[3].y = shape.GetSize().y;
+            auto pos = shape.GetPosition();
+            this->RenderQuad(p[0] + pos, p[1] + pos, p[2] + pos, p[3] + pos, shape.GetChar(), shape.GetColor());
         }
-        if (shape.defShape == "FillRect")
+        if (shape.GetShapeType() == "Shape.Rect.Fill")
         {
-            this->RasterizeQuad(shape.size, shape.pos, shape.surface, shape.color);
+            this->RasterizeQuad(shape.GetSize(), shape.GetPosition(), shape.GetChar(), shape.GetColor());
+        }
+        if (shape.GetShapeType() == "Shape.Triangle.Line")
+        {
+            auto& p = shape.GetVertexArray();
+            auto pos = shape.GetPosition();
+            this->RenderTriangle(p[2] + pos, p[1] + pos, p[0] + pos, shape.GetChar(), shape.GetColor());
+        }
+        if (shape.GetShapeType() == "Shape.Triangle.Fill")
+        {
+            auto& p = shape.GetVertexArray();
+            auto pos = shape.GetPosition();
+            this->RasterizeTriangle(p[0] + pos, p[1] + pos, p[2] + pos, shape.GetChar(), shape.GetColor());
         }
     }
     BOOL UgrCGE::InitConsoleWindow()

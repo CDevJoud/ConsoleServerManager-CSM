@@ -122,6 +122,11 @@ namespace ugr
 
 		RenderTriangle(p1, p2, p3, sur, col);
 	}
+	VOID Renderer::RenderTriangle(VertexArray& p_Array, SHORT surface, SHORT col)
+	{
+		this->RenderTriangle(p_Array[0], p_Array[1], p_Array[2], surface, col);
+		return VOID();
+	}
 	VOID Renderer::RasterizeTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT sur, SHORT col)
 	{
 		INT x1 = p1.x;
@@ -265,6 +270,10 @@ namespace ugr
 			y += 1;
 			if (y > y3) return;
 		}
+	}
+	VOID Renderer::RasterizeTriangle(VertexArray& p_Array, SHORT surface, SHORT col)
+	{
+		this->RasterizeTriangle(p_Array[0], p_Array[1], p_Array[2], surface, col);
 	}
 	VOID Renderer::RenderCircle(Vector2i p1, INT radius, SHORT sur, SHORT col)
 	{

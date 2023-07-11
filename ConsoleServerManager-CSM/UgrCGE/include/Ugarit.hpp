@@ -13,7 +13,7 @@ namespace ugr
 		BOOL CreateConsoleBufferWindow(Vector2i conWinSize, Vector2i fontSize = Vector2i(8, 16));
 		BOOL IsInit();
 		VOID Freeze(INT FreezeLevel);
-		VOID RenderShape(Shape& shape);
+		VOID Render(Shape& shape);
 	private:
 		Vector2i m_screen;
 		HANDLE m_handleConsole;

@@ -1,10 +1,11 @@
 #pragma once
 #include <Windows.h>
 #include <iostream>
-#include "Vector.hpp"
+#include "Shape.hpp"
 
 namespace ugr
 {
+	
 	struct RenderElements
 	{
 		CHAR_INFO* buffer = NULL;
@@ -30,9 +31,11 @@ namespace ugr
 
 		VOID RenderTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT surface = 0x2588, SHORT col = 0x000F);
 		VOID RenderTriangle(FLOAT* p_Array, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID RenderTriangle(VertexArray& p_Array, SHORT surface = 0x2588, SHORT col = 0x000F);
 
 		VOID RasterizeTriangle(Vector2i p1, Vector2i p2, Vector2i p3, SHORT surface = 0x2588, SHORT col = 0x000F);
-		
+		VOID RasterizeTriangle(VertexArray& p_Array, SHORT surface = 0x2588, SHORT col = 0x000F);
+
 		VOID RenderCircle(Vector2i p1, INT radius, SHORT surface = 0x2588, SHORT col = 0x000F);
 		VOID RasterizeCircle(Vector2i p1, INT radius, SHORT surface = 0x2588, SHORT col = 0x00F);
 
@@ -55,7 +58,7 @@ namespace ugr
 		Vector2i m_screen = Vector2i(0, 0);
 		HANDLE m_handleConsole = NULL;
 		SMALL_RECT m_rectConsoleWindow;
-		BOOL RePP = TRUE;
+		BOOL RePP = FALSE;
 		DWORD millisecond = 0;
 	};
 }
