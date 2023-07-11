@@ -335,7 +335,7 @@ namespace ugr
 	VOID Renderer::RasterizeQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT sur, SHORT col)
 	{
 		this->RasterizeTriangle(p1, p2, p3, sur, col);
-		this->RasterizeTriangle(p1, p4, p3, sur, col + 2);
+		this->RasterizeTriangle(p1, p4, p3, sur, col);
 	}
 	VOID Renderer::RenderQuad(Vector2i size, Vector2i pos, SHORT sur, SHORT col)
 	{
