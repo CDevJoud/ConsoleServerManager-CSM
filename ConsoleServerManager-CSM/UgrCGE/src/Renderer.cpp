@@ -32,7 +32,7 @@ namespace ugr
 			if (RePP)
 			{
 				Sleep(this->millisecond);
-				this->Display();
+				WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (SHORT)this->m_screen.x, (SHORT)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
 			}
         }
     }
@@ -370,7 +370,35 @@ namespace ugr
 			if (RePP)
 			{
 				Sleep(this->millisecond);
-				this->Display();
+				WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (SHORT)this->m_screen.x, (SHORT)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
+			}
+		}
+	}
+	VOID Renderer::RenderText(Vector2i pos, LPCSTR str, SHORT color)
+	{
+		if (pos.x >= 0 && pos.x < this->m_screen.x && pos.y >= 0 && pos.y < this->m_screen.y)
+		{
+			for (INT i = 0; i < strlen(str); i++)
+			{
+				int ii = i;
+				if (str[i] == '\n')
+				{
+					// Move to the next line
+					pos.y++;
+					pos.x = 0;
+					ii = 0;
+					continue;
+				}
+
+				this->m_bufferScreen[(pos.y * this->m_screen.x + pos.x) + i].Char.UnicodeChar = str[i];
+				this->m_bufferScreen[(pos.y * this->m_screen.x + pos.x) + i].Attributes = color;
+
+				//pos.x++;
+				if (RePP)
+				{
+					Sleep(this->millisecond);
+					WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (SHORT)this->m_screen.x, (SHORT)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
+				}
 			}
 		}
 	}
@@ -385,8 +413,5 @@ namespace ugr
 	{
 		this->Fill(ugr::Vector2i(0, 0), this->m_screen, sur, col);
 	}
-	VOID Renderer::Display()
-    {
-        WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (short)this->m_screen.x, (short)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
-    }
+	
 }

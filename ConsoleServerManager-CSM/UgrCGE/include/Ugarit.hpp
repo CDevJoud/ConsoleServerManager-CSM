@@ -16,9 +16,11 @@ namespace ugr
 		VOID Freeze(INT FreezeLevel);
 		VOID Render(Shape& shape);
 		VOID Render(Panel& panel);
+		HANDLE m_handleConsole;
+		VOID Display();
 	private:
 		Vector2i m_screen;
-		HANDLE m_handleConsole;
+		
 		HANDLE m_handleConsoleInput;
 		SMALL_RECT m_rectConsoleWindow;
 		CHAR_INFO* m_bufferScreen;

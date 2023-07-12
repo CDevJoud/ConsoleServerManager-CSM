@@ -43,15 +43,16 @@ namespace ugr
 		VOID RasterizeQuad(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4, SHORT surface = 0x2588, SHORT col = 0x000F);
 		VOID RenderQuad(Vector2i size, Vector2i pos, SHORT surface = 0x2588, SHORT col = 0x000F);
 		VOID RasterizeQuad(Vector2i size, Vector2i pos, SHORT surface = 0x2588, SHORT col = 0x000F);
+		
 		VOID RenderText(Vector2i pos,LPCWSTR str, SHORT color = 0x000F);
-
+		VOID RenderText(Vector2i pos,LPCSTR  str, SHORT color = 0x000F);
 
 		//Caclulating Functions
 
 		VOID FindClip(Vector2i& p);
 
 		VOID ClearScreen(SHORT surface = 0x2588, SHORT color = 0x0000);
-		VOID Display();
+		
 	private:
 		void Fill(Vector2i p1, Vector2i p2, SHORT surface = 0x2588, SHORT col = 0x000F);
 		CHAR_INFO* m_bufferScreen = NULL;

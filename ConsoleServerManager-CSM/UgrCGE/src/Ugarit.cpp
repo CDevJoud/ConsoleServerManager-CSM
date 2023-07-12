@@ -81,27 +81,27 @@ namespace ugr
             }
         auto pos = panel.m_vecPosition;
         auto size = panel.m_vecBufferSize;
-
+        auto color = panel.m_n16BorderColor;
         //Draw The Border
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, 0xAF);
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
 
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, 0xAF);
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
 
-        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, 0xAF);
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
 
-        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, 0xAF);
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
         //Set Corner style
         //Top
-        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, 0x0F | 0xA0);
+        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
 
         //Right
-        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, 0xAF);
+        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
 
         //Left
-        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, 0XAF);
+        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
 
         //Bottom
-        SetPixel(pos + size, 0x256F, 0XAF);
+        SetPixel(pos + size, 0x256F, color);
     }
     BOOL UgrCGE::InitConsoleWindow()
     {
@@ -167,5 +167,9 @@ namespace ugr
         re.screen = this->m_screen;
         this->InitRenderer(re);
         return 0;
+    }
+    VOID UgrCGE::Display()
+    {
+        WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (short)this->m_screen.x, (short)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
     }
 }
