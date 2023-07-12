@@ -1,9 +1,10 @@
 #pragma once
 #include <Windows.h>
-#include "Vector.hpp"
+#include "Renderer.hpp"
+
 namespace ugr
 {
-	class Panel
+	class Panel : public Renderer
 	{
 	public:
 		VOID CreatePanel(Vector2i size);
@@ -11,12 +12,15 @@ namespace ugr
 
 		VOID SetBorderChar(SHORT c);
 		VOID SetBorderColor(SHORT color);
+
+		VOID AddMenuToBar(LPCWSTR title, Vector2i offset, SHORT color = 0x0F);
 	private:
 		friend class UgrCGE;
 		SHORT m_n16BorderChar;
-		SHORT m_n16BorderColor;
+		SHORT m_n16BorderColor = 0x0F;
 		Vector2i m_vecBufferSize;
 		Vector2i m_vecPosition;
 		CHAR_INFO* m_Buffer;
+		RenderElements re;
 	};
 }
