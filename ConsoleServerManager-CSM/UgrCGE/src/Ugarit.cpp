@@ -82,6 +82,8 @@ namespace ugr
         auto pos = panel.m_vecPosition;
         auto size = panel.m_vecBufferSize;
         auto color = panel.m_n16BorderColor;
+        auto title = panel.m_Paneltitle;
+        auto titlecol = panel.m_PanelTitleColor;
         //Draw The Border
         this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
 
@@ -102,6 +104,8 @@ namespace ugr
 
         //Bottom
         SetPixel(pos + size, 0x256F, color);
+
+        this->RenderText(Vector2i(pos.x + size.x / 2 - lstrlenW(title) / 2, pos.y - 1), title, titlecol);
     }
     BOOL UgrCGE::InitConsoleWindow()
     {

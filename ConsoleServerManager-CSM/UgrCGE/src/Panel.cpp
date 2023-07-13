@@ -34,4 +34,9 @@ namespace ugr
     {
         this->RenderText(off, t, col);
     }
+    VOID Panel::SetTitle(LPCWSTR title, SHORT color)
+    {
+        this->m_Paneltitle = title;
+        this->m_PanelTitleColor = color;
+    }
 }

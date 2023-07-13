@@ -14,6 +14,8 @@ namespace ugr
 		VOID SetBorderColor(SHORT color);
 
 		VOID AddMenuToBar(LPCWSTR title, Vector2i offset, SHORT color = 0x0F);
+
+		VOID SetTitle(LPCWSTR title, SHORT color = 0x0F);
 	private:
 		friend class UgrCGE;
 		SHORT m_n16BorderChar;
@@ -22,5 +24,7 @@ namespace ugr
 		Vector2i m_vecPosition;
 		CHAR_INFO* m_Buffer;
 		RenderElements re;
+		LPCWSTR m_Paneltitle;
+		SHORT m_PanelTitleColor;
 	};
 }
