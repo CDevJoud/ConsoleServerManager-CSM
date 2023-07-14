@@ -105,7 +105,7 @@ namespace ugr
         //Bottom
         SetPixel(pos + size, 0x256F, color);
 
-        this->RenderText(Vector2i(pos.x + size.x / 2 - lstrlenW(title) / 2, pos.y - 1), title, titlecol);
+        this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
     }
     BOOL UgrCGE::InitConsoleWindow()
     {
