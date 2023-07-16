@@ -22,6 +22,13 @@ namespace ugr
 			o.y = y + i.y;
 			return o;
 		}
+		Vector2<T> operator-(Vector2<T>& i)
+		{
+			Vector2<T> o;
+			o.x = x - i.x;
+			o.y = y - i.y;
+			return o;
+		}
 		T x, y;
 	};
 	
