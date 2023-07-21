@@ -1,8 +1,10 @@
 #pragma once
 #include <Windows.h>
-#include "Renderer.hpp"
-#include "Menu.hpp"
+#include <Renderer.hpp>
+#include <Menu.hpp>
 #include <unordered_map>
+#include <EventProcessor.hpp>
+#include <string>
 namespace ugr
 {
 	class Panel : public Renderer
@@ -17,10 +19,13 @@ namespace ugr
 		VOID CreateMenuBar(BYTE sizex, SHORT c, SHORT color);
 		VOID AddMenu(LPCWSTR menutitle, Menu* attachMenuto, SHORT color);
 
-		VOID RenderPanel(Panel* p);
+		//DANGEROUS FUNCTION
+		//VOID RenderPanel(Panel* p);
 
 		VOID SetTitle(LPCWSTR title, SHORT color = 0x0F);
 		VOID Display();
+
+		VOID ProcessEvents(EventProcessor* EP, Renderer* re);
 	private:
 		typedef struct _MenuBarPropreties
 		{
@@ -33,8 +38,8 @@ namespace ugr
 			LPCWSTR menuTitle;
 			Menu* RedirectMenuBox;
 			SHORT MenuButtonColor;
-		}MenuButton;
-		std::vector<MenuButton> m_vecMenuButton;
+		}MenuButtonProp;
+		std::vector<MenuButtonProp> m_vecMenuButton;
 
 		friend class UgrCGE;
 		SHORT m_n16BorderChar;

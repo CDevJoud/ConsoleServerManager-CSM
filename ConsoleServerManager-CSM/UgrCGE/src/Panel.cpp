@@ -34,55 +34,58 @@ namespace ugr
 
     VOID Panel::AddMenu(LPCWSTR menutitle, Menu* attachMenuto, SHORT col)
     {
-        MenuButton tmp;
+        MenuButtonProp tmp;
         tmp.menuTitle = menutitle;
         tmp.RedirectMenuBox = attachMenuto;
         tmp.MenuButtonColor = col;
         this->m_vecMenuButton.push_back(tmp);
     }
 
-    VOID Panel::RenderPanel(Panel* p)
-    {
-        Vector2i p1(p->m_vecPosition);
-        Vector2i p2(p->m_vecPosition + p->m_vecBufferSize);
+    //DANGEROUS function!!
+    //This Function will be visited later due to wrong mouse reading coordinates & bugs a lot 
+    //VOID Panel::RenderPanel(Panel* p)
+    //{
+    //    //Vector2i diff(1, 1);
+    //    Vector2i p1(p->m_vecPosition);
+    //    Vector2i p2((p->m_vecPosition + p->m_vecBufferSize));
 
-        for (INT x = p1.x; x < p2.x; x++)
-            for (INT y = p1.y; y < p2.y; y++)
-            {
-                INT py = (y - p1.y);
-                INT px = (x - p1.x);
-                auto surface = p->m_Buffer[py * p->m_vecBufferSize.x + px].Char.UnicodeChar;
-                auto color = p->m_Buffer[py * p->m_vecBufferSize.x + px].Attributes;
-                SetPixel(Vector2i(x, y), surface, color);
-            }
-        auto pos = p->m_vecPosition;
-        auto size = p->m_vecBufferSize;
-        auto color = p->m_n16BorderColor;
-        auto title = p->m_Paneltitle;
-        auto titlecol = p->m_PanelTitleColor;
-        //Draw The Border
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
+    //    for (INT x = p1.x; x < p2.x; x++)
+    //        for (INT y = p1.y; y < p2.y; y++)
+    //        {
+    //            INT py = (y - p1.y);
+    //            INT px = (x - p1.x);
+    //            auto surface = p->m_Buffer[py * p->m_vecBufferSize.x + px].Char.UnicodeChar;
+    //            auto color = p->m_Buffer[py * p->m_vecBufferSize.x + px].Attributes;
+    //            SetPixel(Vector2i(x, y), surface, color);
+    //        }
+    //    auto pos = p->m_vecPosition;
+    //    auto size = p->m_vecBufferSize;
+    //    auto color = p->m_n16BorderColor;
+    //    auto title = p->m_Paneltitle;
+    //    auto titlecol = p->m_PanelTitleColor;
+    //    ////Draw The Border
+    //    //this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
 
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
+    //    //this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
 
-        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
+    //    //this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
 
-        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
-        //Set Corner style
-        //Top
-        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
+    //    //this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
+    //    ////Set Corner style
+    //    ////Top
+    //    //SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
 
-        //Right
-        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
+    //    ////Right
+    //    //SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
 
-        //Left
-        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
+    //    ////Left
+    //    //SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
 
-        //Bottom
-        SetPixel(pos + size, 0x256F, color);
+    //    ////Bottom
+    //    //SetPixel(pos + size, 0x256F, color);
 
-        this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
-    }
+    //    this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
+    //}
 
     VOID Panel::SetTitle(LPCWSTR title, SHORT color)
     {
@@ -102,8 +105,40 @@ namespace ugr
         SHORT offsetX = 2;
         for (auto& i : this->m_vecMenuButton)
         {
+            //This is temp
+            i.RedirectMenuBox->m_ClickableMenuPosition = Vector2i(offsetX, 0);
+            //----------------------------------------------------------------
+
+
             this->RenderText(Vector2i(offsetX, 0), i.menuTitle, i.MenuButtonColor);
             offsetX += lstrlenW(i.menuTitle) + 2;
+        }
+    }
+    VOID Panel::ProcessEvents(EventProcessor* EP, Renderer* re)
+    {
+        auto mousePos = EP->GetMousePos() - this->m_vecPosition;
+        if (mousePos.x == 1 && mousePos.y == 1)
+            std::string s;
+        re->RenderText(Vector2i(25, 25), std::wstring(L"X : " + std::to_wstring(mousePos.x) + L" Y : " + std::to_wstring(mousePos.y)).c_str());
+        for (auto& i : this->m_vecMenuButton)
+        {
+            auto pos = i.RedirectMenuBox->m_ClickableMenuPosition;
+            SHORT size = lstrlenW(i.menuTitle) + 1;
+           /* if (mousePos.x >= pos.x && mousePos.x < (pos.x + lstrlenW(i.menuTitle)) &&
+                mousePos.y >= pos.y && mousePos.y <= (pos.y + 1))
+            {
+                if (EP->Mouse(EventProcessor::MouseType::Left).bStrokePressed)
+                    exit(10);
+            }*/
+
+            //Check Mouse Collision relative to the panel position on the main console buffer
+            //(mousePos.y == 0) ? mousePos.y++ : NULL;
+
+            if (mousePos.x >= pos.x && mousePos.x <= (pos.x + lstrlenW(i.menuTitle) - 1) && mousePos.y == pos.y)
+            {
+                if (EP->Mouse(EventProcessor::MouseType::Left).bStrokePressed)
+                    exit(10);
+            }
         }
     }
 }
