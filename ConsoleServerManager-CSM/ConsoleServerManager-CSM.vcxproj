@@ -113,7 +113,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,12 +145,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="UgrCGE\src\EventProcessor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UgrCGE\src\Menu.cpp" />
     <ClCompile Include="UgrCGE\src\Panel.cpp" />
     <ClCompile Include="UgrCGE\src\Renderer.cpp" />
     <ClCompile Include="UgrCGE\src\Shape.cpp" />
@@ -158,6 +160,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="UgrCGE\include\EventProcessor.hpp" />
+    <ClInclude Include="UgrCGE\include\Menu.hpp" />
     <ClInclude Include="UgrCGE\include\Panel.hpp" />
     <ClInclude Include="UgrCGE\include\Renderer.hpp" />
     <ClInclude Include="UgrCGE\include\Shape.hpp" />

@@ -1,8 +1,7 @@
 #include "Application.hpp"
 
-int main()
+INT main()
 {
 	Application app;
-	app.Run();
-	return 0;
+	return app.Run();
 }

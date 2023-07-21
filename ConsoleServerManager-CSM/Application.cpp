@@ -1,6 +1,5 @@
 #include "Application.hpp"
 
-
 //this is a test for reading from the log
 //VOID Application::Run()
 //{
@@ -126,5 +125,54 @@
 //		//this->Render(panel);
 //        this->Display();
 //	}
-//}
+//}ws2_32.lib
 
+INT Application::Run()
+{
+	this->InitConsoleWindow();
+	this->CreateConsoleBufferWindow(Vector2i(240, 75), Vector2i(8, 14));
+	Menu* m = new Menu;
+
+	bool full = false;
+
+	Panel p;
+	p.CreatePanel(Vector2i(50, 50));
+	p.SetPosition(Vector2i(20, 20));
+	p.SetTitle(L"Title LOL", 0x0E);
+	p.CreateMenuBar(49, 0x2588, 0x08);
+	p.AddMenu(L"File", m, 0x8F);
+
+	MainMenu.CreatePanel(Vector2i(235, 73));
+	MainMenu.SetTitle(L"--{MainMenu}--", 0x0A);
+	MainMenu.CreateMenuBar(234, 0x2588, 0x08);
+	MainMenu.AddMenu(L"File", m, 0x8F);
+	
+	while (this->IsInit())
+	{
+		this->ProcessEvents();
+		this->ProcessFPS();
+
+		if (this->Keyboard(L'J').bStrokePressed)
+		{
+			this->SetFullScreen(full);
+			full = !full;
+		}
+
+		p.ClearScreen();
+		p.ProcessEvents(this, &p);
+		p.Display();
+
+		this->MainMenu.ClearScreen(0x2588, 0x01);
+		this->MainMenu.ProcessEvents(this, &MainMenu);
+		this->MainMenu.Display();
+
+		SetConsoleTitle(std::to_wstring(this->GetFPS()).c_str());
+
+		this->ClearScreen();
+		this->RenderPanel(this->MainMenu);
+		this->RenderPanel(p);
+		this->SetPixel(this->GetMousePos());
+		this->Display();
+	}
+	return EXIT_SUCCESS;
+}

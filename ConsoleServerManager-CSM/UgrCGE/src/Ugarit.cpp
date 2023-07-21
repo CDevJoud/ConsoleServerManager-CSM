@@ -1,9 +1,9 @@
 #include "Ugarit.hpp"
 namespace ugr
 {
-    UgrCGE::UgrCGE()
+    UgrCGE::UgrCGE() : EventProcessor(this->m_handleConsoleInput)
     {
-        
+
     }
     BOOL UgrCGE::IsInit()
     {
@@ -23,7 +23,7 @@ namespace ugr
             break;
         }
     }
-    VOID UgrCGE::Render(Shape& shape)
+    VOID UgrCGE::RenderShape(Shape& shape)
     {
         //Check Shapes Type to Render
         if (shape.GetShapeType() == "Shape.Rect.Line")
@@ -65,7 +65,7 @@ namespace ugr
             this->RasterizeTriangle(p[0] + pos, p[1] + pos, p[2] + pos, shape.GetChar(), shape.GetColor());
         }
     }
-    VOID UgrCGE::Render(Panel& panel)
+    VOID UgrCGE::RenderPanel(Panel& panel)
     {
         Vector2i p1(panel.m_vecPosition);
         Vector2i p2(panel.m_vecPosition + panel.m_vecBufferSize);
@@ -107,10 +107,52 @@ namespace ugr
 
         this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
     }
+    HANDLE UgrCGE::GetNativeHandle()
+    {
+        return this->m_handleConsole;
+    }
+    
+    VOID UgrCGE::ProcessFPS()
+    {
+        tp2 = std::chrono::system_clock::now();
+        std::chrono::duration<float> dt = this->tp2 - this->tp1;
+        this->tp1 = this->tp2;
+        this->dt = dt.count();
+    }
+    std::string UgrCGE::GetStrFPS() const
+    {
+        return std::to_string(1.0f / this->dt);
+    }
+    FLOAT UgrCGE::GetFPS() const
+    {
+        return 1.0f / this->dt;
+    }
+    VOID UgrCGE::SetFullScreen(BOOL sw)
+    {
+        if (sw)
+        {
+            HWND consoleWindow = GetConsoleWindow();
+            if (consoleWindow != NULL)
+            {
+                SetWindowLongPtr(consoleWindow, GWL_STYLE, GetWindowLongPtr(consoleWindow, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
+                SetWindowPos(consoleWindow, NULL, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_FRAMECHANGED);
+            }
+        }
+        else
+        {
+            HWND consoleWindow = GetConsoleWindow();
+            if (consoleWindow != NULL)
+            {
+                SetWindowLongPtr(consoleWindow, GWL_STYLE, GetWindowLongPtr(consoleWindow, GWL_STYLE) | WS_OVERLAPPEDWINDOW);
+                SetConsoleWindowInfo(&this->m_handleConsole, TRUE, &this->m_rectConsoleWindow);
+            }
+        }
+    }
     BOOL UgrCGE::InitConsoleWindow()
     {
         this->m_handleConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         this->m_handleConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
+        this->InitEventProcessor(this->m_handleConsoleInput);
         return TRUE;
     }
     BOOL UgrCGE::CreateConsoleBufferWindow(Vector2i CWS, Vector2i fontSize)
@@ -118,7 +160,7 @@ namespace ugr
         //Check if handleConsole is init
         if (!this->IsInit())
             MessageBox(NULL, L"Bad Handle", L"Error", MB_ICONERROR | MB_OK);
-        
+
         //Set screen size relative to the given parameter
         this->m_screen = CWS;
 
@@ -133,7 +175,7 @@ namespace ugr
         CONSOLE_FONT_INFOEX cfi;
         cfi.cbSize = sizeof(cfi);
         cfi.nFont = NULL;
-        cfi.dwFontSize.X = fontSize.x;
+        cfi.dwFontSize.X = SHORT(fontSize.x);
         cfi.dwFontSize.Y = fontSize.y;
         cfi.FontFamily = FF_DONTCARE;
         cfi.FontWeight = FW_NORMAL;
@@ -162,7 +204,7 @@ namespace ugr
         SetConsoleMode(this->m_handleConsoleInput, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
 
         this->m_bufferScreen = new CHAR_INFO[this->m_screen.x * this->m_screen.y];
-        ZeroMemory(this->m_bufferScreen, sizeof(CHAR_INFO) * this->m_screen.x * this->m_screen.y);
+        ZeroMemory(this->m_bufferScreen, sizeof(CHAR_INFO) * SHORT(this->m_screen.x) * SHORT(this->m_screen.y));
 
         //Init RenderElements and Renderer
         re.buffer = this->m_bufferScreen;
@@ -176,4 +218,5 @@ namespace ugr
     {
         WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (short)this->m_screen.x, (short)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
     }
+    
 }
