@@ -25,7 +25,7 @@ namespace ugr
 		VOID SetTitle(LPCWSTR title, SHORT color = 0x0F);
 		VOID Display();
 
-		VOID ProcessEvents(EventProcessor* EP, Renderer* re);
+		VOID ProcessEvents(EventProcessor* EP);
 	private:
 		typedef struct _MenuBarPropreties
 		{

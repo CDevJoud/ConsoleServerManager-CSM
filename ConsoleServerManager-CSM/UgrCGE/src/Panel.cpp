@@ -112,33 +112,42 @@ namespace ugr
 
             this->RenderText(Vector2i(offsetX, 0), i.menuTitle, i.MenuButtonColor);
             offsetX += lstrlenW(i.menuTitle) + 2;
+            
+            //Render the Menu
+            if (!i.RedirectMenuBox->m_bIsHidden)
+            {
+                Vector2i offset(0, 1);
+                this->RasterizeQuad(i.RedirectMenuBox->m_size, i.RedirectMenuBox->m_ClickableMenuPosition + offset, 0x2588, i.RedirectMenuBox->m_n16Color);
+                Vector2i elOffset = i.RedirectMenuBox->m_ClickableMenuPosition + offset;
+
+                //Render Menu Elements
+                for (auto& j : i.RedirectMenuBox->m_vecElements)
+                {
+                    this->RenderText(elOffset, j, 0x8F);
+                    elOffset.y++;
+                }
+            }
         }
     }
-    VOID Panel::ProcessEvents(EventProcessor* EP, Renderer* re)
+    VOID Panel::ProcessEvents(EventProcessor* EP)
     {
         auto mousePos = EP->GetMousePos() - this->m_vecPosition;
-        if (mousePos.x == 1 && mousePos.y == 1)
-            std::string s;
-        re->RenderText(Vector2i(25, 25), std::wstring(L"X : " + std::to_wstring(mousePos.x) + L" Y : " + std::to_wstring(mousePos.y)).c_str());
         for (auto& i : this->m_vecMenuButton)
         {
             auto pos = i.RedirectMenuBox->m_ClickableMenuPosition;
+            auto mSize = i.RedirectMenuBox->m_size;
             SHORT size = lstrlenW(i.menuTitle) + 1;
-           /* if (mousePos.x >= pos.x && mousePos.x < (pos.x + lstrlenW(i.menuTitle)) &&
-                mousePos.y >= pos.y && mousePos.y <= (pos.y + 1))
-            {
-                if (EP->Mouse(EventProcessor::MouseType::Left).bStrokePressed)
-                    exit(10);
-            }*/
-
-            //Check Mouse Collision relative to the panel position on the main console buffer
-            //(mousePos.y == 0) ? mousePos.y++ : NULL;
-
             if (mousePos.x >= pos.x && mousePos.x <= (pos.x + lstrlenW(i.menuTitle) - 1) && mousePos.y == pos.y)
             {
                 if (EP->Mouse(EventProcessor::MouseType::Left).bStrokePressed)
-                    exit(10);
+                {
+                    i.RedirectMenuBox->m_bIsHidden = false;
+                }
             }
+            //check for Mouse hovering on the menu
+            else if (!(mousePos.x >= pos.x     && mousePos.x < (pos.x + mSize.x) && 
+                       mousePos.y >= pos.y + 1 && mousePos.y < (pos.y + mSize.y + 1)))
+                i.RedirectMenuBox->m_bIsHidden = true;
         }
     }
 }
