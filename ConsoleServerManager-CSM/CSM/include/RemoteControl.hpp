@@ -1,5 +1,6 @@
 #pragma once
 #include <State.hpp>
+
 using namespace ugr;
 namespace IExtreme::Application::CSM
 {
@@ -13,6 +14,7 @@ namespace IExtreme::Application::CSM
 		BOOL OnRender();
 		BOOL Clean();
 	private:
+		TextBox box;
 		Panel* m_Panel = new Panel;
 	};
 }
