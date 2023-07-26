@@ -10,7 +10,12 @@ namespace IExtreme::Application::CSM
 
 		virtual BOOL OnCreate() = 0;
 		virtual BOOL OnUpdate() = 0;
+		virtual BOOL OnRender() = 0;
+		virtual BOOL Clean() = 0;
+
+		BOOL ToQuit() const;
 	protected:
+		BOOL m_bQuit = FALSE;
 		ugr::UgrCGE* CGE = NULL;
 	};
 }

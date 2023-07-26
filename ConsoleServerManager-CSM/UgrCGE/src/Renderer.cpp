@@ -40,8 +40,8 @@ namespace ugr
     {
         FindClip(p1);
         FindClip(p2);
-        for (INT x = p1.x; x < p2.x; x++)
-			for (INT y = p1.y; y < p2.y; y++)
+        for (INT y = p1.y; y < p2.y; y++)
+			for (INT x = p1.x; x < p2.x; x++)
 				SetPixel(Vector2i(x, y), surface, color);
     }
 	VOID Renderer::RenderLine(Vector2i p1, Vector2i p2, SHORT sur, SHORT col)

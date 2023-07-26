@@ -70,15 +70,6 @@ namespace ugr
         Vector2i p1(panel.m_vecPosition);
         Vector2i p2(panel.m_vecPosition + panel.m_vecBufferSize);
 
-        for (INT x = p1.x; x < p2.x; x++)
-            for (INT y = p1.y; y < p2.y; y++)
-            {
-                INT py = (y - p1.y);
-                INT px = (x - p1.x);
-                auto surface = panel.m_Buffer[py * panel.m_vecBufferSize.x + px].Char.UnicodeChar;
-                auto color = panel.m_Buffer[py * panel.m_vecBufferSize.x + px].Attributes;
-                SetPixel(Vector2i(x, y), surface, color);
-            }
         auto pos = panel.m_vecPosition;
         auto size = panel.m_vecBufferSize;
         auto color = panel.m_n16BorderColor;
@@ -106,6 +97,16 @@ namespace ugr
         SetPixel(pos + size, 0x256F, color);
 
         this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
+
+        for (INT y = p1.y; y < p2.y; y++)
+            for (INT x = p1.x; x < p2.x; x++)
+            {
+                INT py = (y - p1.y);
+                INT px = (x - p1.x);
+                auto surface = panel.m_Buffer[py * panel.m_vecBufferSize.x + px].Char.UnicodeChar;
+                auto color = panel.m_Buffer[py * panel.m_vecBufferSize.x + px].Attributes;
+                SetPixel(Vector2i(x, y), surface, color);
+            }
     }
     HANDLE UgrCGE::GetNativeHandle()
     {

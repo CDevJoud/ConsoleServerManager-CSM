@@ -52,9 +52,9 @@ namespace ugr
 		VOID FindClip(Vector2i& p);
 
 		VOID ClearScreen(SHORT surface = 0x2588, SHORT color = 0x0000);
-		
-	private:
 		void Fill(Vector2i p1, Vector2i p2, SHORT surface = 0x2588, SHORT col = 0x000F);
+
+	private:
 		CHAR_INFO* m_bufferScreen = NULL;
 		Vector2i m_screen = Vector2i(0, 0);
 		HANDLE m_handleConsole = NULL;

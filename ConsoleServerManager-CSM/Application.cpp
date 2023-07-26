@@ -1,8 +1,16 @@
 #include "Application.hpp"
 
-INT Application::Run()
+Application::Application()
 {
 	this->InitConsoleWindow();
+	this->CreateConsoleBufferWindow(Vector2i(240, 75), Vector2i(8, 14));
+	this->m_states.push(new IExtreme::Application::CSM::RemoteControl(this));
+	this->m_states.top()->OnCreate();
+}
+
+INT Application::Run()
+{
+	/*this->InitConsoleWindow();
 	this->CreateConsoleBufferWindow(Vector2i(240, 75), Vector2i(8, 14));
 	Menu* m = new Menu;
 	Menu* m1 = new Menu;
@@ -48,6 +56,21 @@ INT Application::Run()
 		this->RenderPanel(this->MainMenu);
 		this->SetPixel(this->GetMousePos());
 		this->Display();
+	}*/
+
+	while (this->IsInit() && !this->m_states.top()->ToQuit())
+	{
+		this->ProcessEvents();
+
+		if (!this->m_states.empty())
+			this->m_states.top()->OnUpdate();
+
+		this->ClearScreen();
+		if (!this->m_states.empty())
+			this->m_states.top()->OnRender();
+		this->Display();
 	}
+	delete this->m_states.top();
+	this->m_states.pop();
 	return EXIT_SUCCESS;
 }

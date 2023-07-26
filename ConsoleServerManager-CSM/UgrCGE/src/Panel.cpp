@@ -87,6 +87,72 @@ namespace ugr
     //    this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
     //}
 
+    VOID Panel::RenderTextBox(TextBox* box)
+    {
+        auto pos = box->m_pos;
+        auto size = box->m_size;
+
+       
+        this->Fill(pos, pos + size, 0x2588, box->m_n16Color);
+        
+        // Draw the visible lines
+        for (int y = 0; y < box->m_nVisibleHeight; y++)
+        {
+            int lineIndex = y + box->m_nScrollPosition;
+            if (lineIndex >= 0 && lineIndex < static_cast<int>(box->m_vecLines.size()))
+            {
+                this->RenderText(Vector2i(0 + pos.x, y + 1 + pos.y), box->m_vecLines[lineIndex].c_str());
+            }
+        }
+
+        // Calculate and draw the scroll bar thumb
+        float fThumbHeight = static_cast<float>(box->m_nVisibleHeight) / box->m_vecLines.size() * box->m_nScrollBarHeight;
+        int nThumbY = static_cast<int>(static_cast<float>(box->m_nScrollPosition) / (box->m_vecLines.size() - box->m_nVisibleHeight) * (box->m_nScrollBarHeight - fThumbHeight));
+
+        //Draw Arrow
+        this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y - 1), 0x2191);
+
+        // Draw the scroll bar background
+        for (int y = 0; y < box->m_nScrollBarHeight; y++)
+        {
+            //Draw Arrow
+            this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y + y + 1), 0x2193);
+            this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + y + pos.y));
+        }
+
+        // Draw the scroll bar thumb
+
+        //before drawing check if the thumb height is bigger than the Visibile height
+        //if the thumb height larger than the visibile set it to the visibile height
+        //else check if the thumb height is lower than 1.0f, if so return alpha true.
+        fThumbHeight = (fThumbHeight >= box->m_nVisibleHeight) ? box->m_nVisibleHeight : (fThumbHeight < 1.0f) ? 1.0f : fThumbHeight;
+
+        for (int y = 0; y < static_cast<int>(fThumbHeight); y++)
+        {
+            this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + nThumbY + y + pos.y), 0x2588, 0x06);
+        }
+       
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, 0x0F);
+
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, 0x0F);
+
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, 0x0F);
+
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, 0x0F);
+
+        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, 0x0F);
+
+        //Right
+        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, 0x0F);
+
+        //Left
+        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, 0x0F);
+
+        //Bottom
+        SetPixel(pos + size, 0x256F, 0x0F);
+        return VOID();
+    }
+
     VOID Panel::SetTitle(LPCWSTR title, SHORT color)
     {
         this->m_Paneltitle = title;

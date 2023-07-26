@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <EventProcessor.hpp>
 #include <string>
+#include <TextBox.hpp>
 namespace ugr
 {
 	class Panel : public Renderer
@@ -21,6 +22,8 @@ namespace ugr
 
 		//DANGEROUS FUNCTION
 		//VOID RenderPanel(Panel* p);
+
+		VOID RenderTextBox(TextBox* box);
 
 		VOID SetTitle(LPCWSTR title, SHORT color = 0x0F);
 		VOID Display();

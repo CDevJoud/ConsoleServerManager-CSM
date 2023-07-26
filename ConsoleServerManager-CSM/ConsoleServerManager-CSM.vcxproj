@@ -158,6 +158,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CSM\src\State.cpp" />
     <ClCompile Include="CSM\src\RemoteControl.cpp" />
+    <ClCompile Include="UgrCGE\src\TextBox.cpp" />
     <ClCompile Include="UgrCGE\src\EventProcessor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UgrCGE\src\Menu.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="CSM\include\State.hpp" />
     <ClInclude Include="CSM\include\RemoteControl.hpp" />
+    <ClInclude Include="UgrCGE\include\TextBox.hpp" />
     <ClInclude Include="UgrCGE\include\EventProcessor.hpp" />
     <ClInclude Include="UgrCGE\include\Menu.hpp" />
     <ClInclude Include="UgrCGE\include\Panel.hpp" />
