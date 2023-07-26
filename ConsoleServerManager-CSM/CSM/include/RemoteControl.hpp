@@ -16,5 +16,6 @@ namespace IExtreme::Application::CSM
 	private:
 		TextBox box;
 		Panel* m_Panel = new Panel;
+		BOOL m_bFullScreen = FALSE;
 	};
 }
