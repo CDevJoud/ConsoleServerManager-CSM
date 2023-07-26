@@ -26,24 +26,50 @@
 
 namespace ugr
 {
+	TextBox::~TextBox()
+	{
+		this->m_vecLines.clear();
+		this->m_vecLines.shrink_to_fit();
+	}
+	VOID TextBox::Clean()
+	{
+		this->m_vecLines.clear();
+		this->m_vecLines.shrink_to_fit();
+	}
 	VOID TextBox::CreateBox(Vector2i size)
 	{
 		this->m_size = size;
-		this->m_scrollbarPosition.x = size.x - 2;
+		this->m_scrollbarPosition.x = size.x;
 		this->m_scrollbarPosition.y = 1;
 		this->m_nScrollBarHeight = size.y - 2;
 		this->m_nVisibleHeight = size.y;
+		this->re.buffer = new CHAR_INFO[this->m_size.x * this->m_size.y]{};
+		this->re.screen = size;
+		this->InitRenderer(re);
 	}
 	VOID TextBox::SetPosition(Vector2i pos)
 	{
 		this->m_pos = pos;
 	}
-	VOID TextBox::AddLine(LPCWSTR str)
+	VOID TextBox::AddLine(LPCSTR str)
 	{
 		this->m_vecLines.push_back(str);
 	}
 	VOID TextBox::SetTextBoxColor(SHORT color)
 	{
 		this->m_n16Color = color;
+	}
+	VOID TextBox::RenderSilent()
+	{
+		this->ClearScreen();
+		// Draw the visible lines
+		for (int y = 0; y < this->m_nVisibleHeight; y++)
+		{
+			int lineIndex = y + this->m_nScrollPosition;
+			if (lineIndex >= 0 && lineIndex < static_cast<int>(this->m_vecLines.size()))
+			{
+				this->RenderText(Vector2i(0, y), this->m_vecLines[lineIndex].c_str());
+			}
+		}
 	}
 }

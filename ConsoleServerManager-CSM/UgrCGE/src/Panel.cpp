@@ -116,33 +116,44 @@ namespace ugr
         auto pos = box->m_pos;
         auto size = box->m_size;
 
+        Vector2i p1 = pos;
+        Vector2i p2 = pos + size;
        
         this->Fill(pos, pos + size, 0x2588, box->m_n16Color);
         
-        // Draw the visible lines
-        for (int y = 0; y < box->m_nVisibleHeight; y++)
-        {
-            int lineIndex = y + box->m_nScrollPosition;
-            if (lineIndex >= 0 && lineIndex < static_cast<int>(box->m_vecLines.size()))
+        box->RenderSilent();
+        for (INT y = p1.y; y < p2.y; y++)
+            for (INT x = p1.x; x < p2.x; x++)
             {
-                this->RenderText(Vector2i(0 + pos.x, y + 1 + pos.y), box->m_vecLines[lineIndex].c_str());
+                INT py = (y - p1.y);
+                INT px = (x - p1.x);
+                auto surface = box->re.buffer[py * box->m_size.x + px].Char.UnicodeChar;
+                auto color = box->re.buffer[py * box->m_size.x + px].Attributes;
+                SetPixel(Vector2i(x, y), surface, color);
             }
-        }
-
         // Calculate and draw the scroll bar thumb
         float fThumbHeight = static_cast<float>(box->m_nVisibleHeight) / box->m_vecLines.size() * box->m_nScrollBarHeight;
         int nThumbY = static_cast<int>(static_cast<float>(box->m_nScrollPosition) / (box->m_vecLines.size() - box->m_nVisibleHeight) * (box->m_nScrollBarHeight - fThumbHeight));
 
-        //Draw Arrow
-        this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y - 1), 0x2191);
+        //Old But Gold
+        ////Draw Arrow
+        //this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y - 1), 0x2191);
 
-        // Draw the scroll bar background
-        for (int y = 0; y < box->m_nScrollBarHeight; y++)
-        {
-            //Draw Arrow
-            this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y + y + 1), 0x2193);
-            this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + y + pos.y));
-        }
+        //// Draw the scroll bar background
+        //for (int y = 0; y < box->m_nScrollBarHeight; y++)
+        //{
+        //    //Draw Arrow
+        //    this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y + y + 1), 0x2193);
+        //    this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + y + pos.y));
+        //}
+       
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, 0x0F);
+
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, 0x0F);
+
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, 0x0F);
+
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, 0x0F);
 
         // Draw the scroll bar thumb
 
@@ -155,14 +166,6 @@ namespace ugr
         {
             this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + nThumbY + y + pos.y), 0x2588, 0x06);
         }
-       
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, 0x0F);
-
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, 0x0F);
-
-        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, 0x0F);
-
-        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, 0x0F);
 
         SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, 0x0F);
 

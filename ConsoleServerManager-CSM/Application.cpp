@@ -75,7 +75,6 @@ INT Application::Run()
 		this->MainMenu.ProcessEvents(this);
 		this->MainMenu.Display();
 
-		SetConsoleTitle(std::to_wstring(this->GetFPS()).c_str());
 
 		this->RenderPanel(this->MainMenu);
 		this->SetPixel(this->GetMousePos());
@@ -85,15 +84,18 @@ INT Application::Run()
 	while (this->IsInit() && !this->m_states.top()->ToQuit())
 	{
 		this->ProcessEvents();
-
+		this->ProcessFPS();
 		if (!this->m_states.empty())
 			this->m_states.top()->OnUpdate();
+
+		SetConsoleTitle(std::to_wstring(this->GetFPS()).c_str());
 
 		this->ClearScreen();
 		if (!this->m_states.empty())
 			this->m_states.top()->OnRender();
 		this->Display();
 	}
+	this->m_states.top()->Clean();
 	delete this->m_states.top();
 	this->m_states.pop();
 	return EXIT_SUCCESS;

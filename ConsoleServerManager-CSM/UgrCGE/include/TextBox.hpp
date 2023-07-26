@@ -27,27 +27,31 @@
 #include <Vector.hpp>
 #include <vector>
 #include <string>
+#include <Renderer.hpp>
 #include <EventProcessor.hpp>
 namespace ugr
 {
-	class TextBox
+	class TextBox : private Renderer
 	{
 	public:
+		~TextBox();
+		VOID Clean();
 		VOID CreateBox(Vector2i size);
 		VOID SetPosition(Vector2i pos);
-		VOID AddLine(LPCWSTR str);
+		VOID AddLine(LPCSTR str);
 		VOID SetTextBoxColor(SHORT color);
 		INT GetScrollPosition() const { return this->m_nScrollPosition; }
 		VOID MoveUp() { this->m_nScrollPosition--; }
 		VOID MoveDown() { this->m_nScrollPosition++; }
 		INT GetLinesSize() const { return m_vecLines.size(); }
 	private:
+		VOID RenderSilent();
 		friend class Panel;
 		Vector2i m_size;
-		CHAR_INFO* m_Buffer;
+		RenderElements re;
 		Vector2i m_pos;
 
-		std::vector<std::wstring> m_vecLines;
+		std::vector<std::string> m_vecLines;
 		int m_nVisibleHeight; // Height of the visible region
 		int m_nScrollPosition = 0; // Current scroll position
 		SHORT m_n16Color = 0x00;
