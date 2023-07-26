@@ -34,10 +34,10 @@ namespace IExtreme::Application::CSM
 		this->m_Panel->CreatePanel(Vector2i(235, 73));
 		this->m_Panel->SetTitle(L"RemoteControl");
 
-		this->box.CreateBox(Vector2i(30, 50));
+		this->box.CreateBox(Vector2i(230, 50));
 		this->box.SetPosition(Vector2i(1, 1));
-		for (int i = 0; i < 1000; i++)
-			this->box.AddLine(std::wstring(L"Lines" + std::to_wstring(i)).c_str());
+		for (int i = 0; i < 1'000; i++)
+			this->box.AddLine(std::string("Lines " + std::to_string(i)).c_str());
 		return TRUE;
 	}
 	BOOL RemoteControl::OnUpdate()
@@ -45,6 +45,8 @@ namespace IExtreme::Application::CSM
 		if (this->CGE->Keyboard(VK_ESCAPE).bStrokeReleased) this->m_bQuit = TRUE;
 		if (CGE->Keyboard(VK_UP).bStrokeIsHeld && box.GetScrollPosition() > 0) this->box.MoveUp();
 		if (CGE->Keyboard(VK_DOWN).bStrokeIsHeld && box.GetScrollPosition() < static_cast<int>(box.GetLinesSize()) - (50)) this->box.MoveDown();
+		if (this->CGE->Keyboard(VK_PRIOR).bStrokeIsHeld && box.GetScrollPosition() > 0) for (INT i = 0; i < 10; i++) this->box.MoveUp();
+		if (this->CGE->Keyboard(VK_NEXT).bStrokeIsHeld && box.GetScrollPosition() < static_cast<int>(box.GetLinesSize() - 50)) for (INT i = 0; i < 10; i++) this->box.MoveDown();
 		
 		if (this->CGE->Keyboard(VK_F11).bStrokeReleased)
 		{
@@ -66,6 +68,7 @@ namespace IExtreme::Application::CSM
 	}
 	BOOL RemoteControl::Clean()
 	{
+		this->box.Clean();
 		delete this->m_Panel;
 		return TRUE;
 	}
