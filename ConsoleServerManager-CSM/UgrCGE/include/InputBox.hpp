@@ -43,7 +43,7 @@ namespace ugr
 		BOOL IsFocused() const;
 		BOOL Submited();
 	private:
-		VOID ProcessKeyInput(EventProcessor* e);
+		VOID ProcessKeyInput();
 		std::wstring m_strInput;
 		VOID RenderSilent();
 		VOID CleanStrFromJunk(std::wstring& str);

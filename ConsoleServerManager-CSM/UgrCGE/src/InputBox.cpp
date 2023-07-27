@@ -61,7 +61,7 @@ namespace ugr
 		}
 		//We need a thread!!
 		if (this->m_bEnableInput)
-			this->ProcessKeyInput(EP);
+			this->ProcessKeyInput();
 		else
 			this->m_bHasSumbited = FALSE;
 	}
@@ -81,10 +81,10 @@ namespace ugr
 	{
 		return m_bHasSumbited;
 	}
-	VOID InputBox::ProcessKeyInput(EventProcessor* e)
+	VOID InputBox::ProcessKeyInput()
 	{
-		SHORT c = e->GetKeyBoardPressed();
-		if (c == 127 && !this->m_strInput.empty())
+		SHORT c = _getch();
+		if (c == 8 && !this->m_strInput.empty())
 		{
 			this->m_strInput.pop_back();
 			this->m_strInput.shrink_to_fit();
@@ -96,11 +96,20 @@ namespace ugr
 			this->m_bEnableInput = FALSE;
 			this->m_n16ColorBorder = 0x08;
 		}
-
 		if (c == 13)
 			this->m_bHasSumbited = TRUE;
 		else
 			this->m_bHasSumbited = FALSE;
+		if (c == 127)
+		{
+			this->m_strInput.clear();
+			this->m_strInput.shrink_to_fit();
+		}
+		//Handling Arrow key
+		//_getch will return two keycodes for arrow keys the first keycode 224 to identify that is an arrow key were pressed
+		//and the second keycode shows the which arrow and by calling another _getch we can skip that second keycode
+		if (c == 224)
+			_getch();
 		this->CleanStrFromJunk(this->m_strInput);
 	}
 	VOID InputBox::RenderSilent()
@@ -112,7 +121,7 @@ namespace ugr
 	{
 		std::wstring tmp;
 		for (auto& i : str)
-			if (i != 127 && i != 1 && i != 13 && i != 27)
+			if (i != 8 && i != 1 && i != 13 && i != 27 && i != 224)
 				tmp.push_back(i);
 		str = tmp;
 	}
