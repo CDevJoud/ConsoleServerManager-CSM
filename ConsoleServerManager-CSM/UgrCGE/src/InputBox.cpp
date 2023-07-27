@@ -59,6 +59,7 @@ namespace ugr
 				return;
 			}
 		}
+		//We need a thread!!
 		if (this->m_bEnableInput)
 			this->ProcessKeyInput(EP);
 		else

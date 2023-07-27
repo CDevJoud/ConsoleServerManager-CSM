@@ -44,6 +44,7 @@ namespace ugr
 		VOID MoveUp() { this->m_nScrollPosition--; }
 		VOID MoveDown() { this->m_nScrollPosition++; }
 		INT GetLinesSize() const { return m_vecLines.size(); }
+		VOID ResetTextBox();
 	private:
 		VOID RenderSilent();		
 		friend class Panel;

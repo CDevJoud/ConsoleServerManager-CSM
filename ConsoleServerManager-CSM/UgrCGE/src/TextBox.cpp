@@ -59,6 +59,11 @@ namespace ugr
 	{
 		this->m_n16Color = color;
 	}
+	VOID TextBox::ResetTextBox()
+	{
+		this->m_vecLines.clear();
+		this->m_vecLines.shrink_to_fit();
+	}
 	VOID TextBox::RenderSilent()
 	{
 		Vector2i p1 = this->m_pos;

@@ -54,12 +54,17 @@ namespace IExtreme::Application::CSM
 		if (input.Submited())
 		{
 			std::wstring cmd = input.GetStrInput();
-			if (cmd == L"exit")
+			if (cmd == L"exit()")
 				this->m_bQuit = TRUE;
 			if (cmd == L"echo")
-				for (int i = 0; i < 1'00; i++)
+				for (int i = 0; i < 1'000; i++)
 					this->box->AddLine(std::wstring(L"Lines " + std::to_wstring(i)).c_str());
+
 			this->box->AddLine(input.GetStrInput().c_str());
+			if (cmd == L"cls")
+				this->box->ResetTextBox();
+			if (cmd == L"std::cout << \"Hello World\" << std::endl;")
+				this->box->AddLine(L"Hello World");
 			this->input.ResetStrInput();
 		}
 		return TRUE;
