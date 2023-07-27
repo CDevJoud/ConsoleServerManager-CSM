@@ -47,13 +47,12 @@ namespace ugr
 		{
 			Left = 0, Right, Middle
 		};
-		
+
 
 		KeyStrokesCondition Keyboard(INT ID) { return this->m_KeyboardCondition[ID]; }
 		Vector2i GetMousePos() const { return this->m_mousePos; }
 		KeyStrokesCondition Mouse(MouseType ID);
 
-		SHORT GetKeyBoardPressed();
 		VOID ProcessEvents();
 	protected:
 		VOID InitEventProcessor(HANDLE hConsoleInput);
