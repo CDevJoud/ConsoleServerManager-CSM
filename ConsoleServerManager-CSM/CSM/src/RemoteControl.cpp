@@ -67,6 +67,7 @@ namespace IExtreme::Application::CSM
 				this->box->AddLine(L"Hello World");
 			this->input.ResetStrInput();
 		}
+		
 		return TRUE;
 	}
 	BOOL RemoteControl::OnRender()
