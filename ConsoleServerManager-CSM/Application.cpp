@@ -49,8 +49,11 @@ INT Application::Run()
 		this->SetPixel(this->GetMousePos());
 		this->Display();
 	}
+	this->ClearScreen();
+	this->Display();
 	this->m_states.top()->Clean();
 	delete this->m_states.top();
 	this->m_states.pop();
+	this->ShutDownCGE();
 	return EXIT_SUCCESS;
 }
