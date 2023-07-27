@@ -38,8 +38,9 @@ namespace IExtreme::Application::CSM
 		BOOL OnRender();
 		BOOL Clean();
 	private:
-		TextBox box;
+		TextBox* box = new TextBox;
+		InputBox input;
 		Panel* m_Panel = new Panel;
-		BOOL m_bFullScreen = FALSE;
+		BOOL m_bFullScreen = TRUE;
 	};
 }
