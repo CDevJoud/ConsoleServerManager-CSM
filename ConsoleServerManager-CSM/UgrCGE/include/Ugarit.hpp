@@ -54,8 +54,10 @@ namespace ugr
 		VOID ProcessFPS();
 
 		VOID Display();
-	
+		
+		VOID ShutDownCGE();
 	private:
+		VOID SetUpFrame(Vector2i pos, Vector2i size, SHORT color);
 		HANDLE m_handleConsole = NULL;
 
 		std::chrono::system_clock::time_point tp1 = std::chrono::system_clock::now();

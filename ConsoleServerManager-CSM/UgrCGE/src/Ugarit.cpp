@@ -100,25 +100,7 @@ namespace ugr
         auto title = panel.m_Paneltitle;
         auto titlecol = panel.m_PanelTitleColor;
         //Draw The Border
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
-
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
-
-        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
-
-        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
-        //Set Corner style
-        //Top
-        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
-
-        //Right
-        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
-
-        //Left
-        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
-
-        //Bottom
-        SetPixel(pos + size, 0x256F, color);
+        SetUpFrame(pos, size, color);
 
         this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y - 1), title, titlecol);
 
@@ -242,6 +224,35 @@ namespace ugr
     VOID UgrCGE::Display()
     {
         WriteConsoleOutput(this->m_handleConsole, this->m_bufferScreen, { (short)this->m_screen.x, (short)this->m_screen.y }, { 0, 0 }, &this->m_rectConsoleWindow);
+    }
+
+    VOID UgrCGE::ShutDownCGE()
+    {
+        delete[] m_bufferScreen;
+        CloseHandle(this->m_handleConsole);
+        CloseHandle(this->m_handleConsoleInput);
+    }
+
+    VOID UgrCGE::SetUpFrame(Vector2i pos, Vector2i size, SHORT color)
+    {
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
+
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
+
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
+
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
+
+        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
+
+        //Right
+        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
+
+        //Left
+        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
+
+        //Bottom
+        SetPixel(pos + size, 0x256F, color);
     }
     
 }

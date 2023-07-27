@@ -144,37 +144,20 @@ namespace ugr
         //    this->SetPixel(Vector2i(pos.x + box->m_scrollbarPosition.x, pos.y + box->m_scrollbarPosition.y + y + 1), 0x2193);
         //    this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + y + pos.y));
         //}
-       
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, 0x0F);
-
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, 0x0F);
-
-        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, 0x0F);
-
-        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, 0x0F);
 
         // Draw the scroll bar thumb
 
         //before drawing check if the thumb height is bigger than the Visibile height
         //if the thumb height larger than the visibile set it to the visibile height
         //else check if the thumb height is lower than 1.0f, if so return alpha true.
+        this->SetUpFrame(pos, size, 0x0F);
         fThumbHeight = (fThumbHeight >= box->m_nVisibleHeight) ? box->m_nVisibleHeight : (fThumbHeight < 1.0f) ? 1.0f : fThumbHeight;
 
         for (int y = 0; y < static_cast<int>(fThumbHeight); y++)
         {
             this->SetPixel(Vector2i(box->m_scrollbarPosition.x + pos.x, box->m_scrollbarPosition.y + nThumbY + y + pos.y), 0x2588, 0x06);
         }
-
-        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, 0x0F);
-
-        //Right
-        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, 0x0F);
-
-        //Left
-        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, 0x0F);
-
-        //Bottom
-        SetPixel(pos + size, 0x256F, 0x0F);
+        
     }
 
     VOID Panel::RenderInputBox(InputBox* box)
@@ -196,24 +179,7 @@ namespace ugr
             }
 
         auto color = box->m_n16ColorBorder;
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
-
-        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
-
-        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
-
-        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
-
-        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
-
-        //Right
-        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
-
-        //Left
-        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
-
-        //Bottom
-        SetPixel(pos + size, 0x256F, color);
+        this->SetUpFrame(pos, size, color);
     }
 
     VOID Panel::SetTitle(LPCWSTR title, SHORT color)
@@ -278,5 +244,26 @@ namespace ugr
                        mousePos.y >= pos.y + 1 && mousePos.y < (pos.y + mSize.y + 1)))
                 i.RedirectMenuBox->m_bIsHidden = true;
         }
+    }
+    VOID Panel::SetUpFrame(Vector2i pos, Vector2i size, SHORT color)
+    {
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
+
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
+
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
+
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
+
+        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
+
+        //Right
+        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
+
+        //Left
+        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
+
+        //Bottom
+        SetPixel(pos + size, 0x256F, color);
     }
 }

@@ -56,6 +56,7 @@ namespace ugr
 
 		VOID ProcessEvents(EventProcessor* EP);
 	private:
+		VOID SetUpFrame(Vector2i pos, Vector2i size, SHORT color = 0x0F);
 		typedef struct _MenuBarPropreties
 		{
 			BYTE sizeX;
