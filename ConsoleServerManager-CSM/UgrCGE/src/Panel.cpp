@@ -118,8 +118,6 @@ namespace ugr
 
         Vector2i p1 = pos;
         Vector2i p2 = pos + size;
-       
-        this->Fill(pos, pos + size, 0x2588, box->m_n16Color);
         
         box->RenderSilent();
         for (INT y = p1.y; y < p2.y; y++)
@@ -177,7 +175,45 @@ namespace ugr
 
         //Bottom
         SetPixel(pos + size, 0x256F, 0x0F);
-        return VOID();
+    }
+
+    VOID Panel::RenderInputBox(InputBox* box)
+    {
+        auto pos = box->m_pos;
+        auto size = box->m_size;
+
+        Vector2i p1 = pos;
+        Vector2i p2 = pos + size;
+        box->RenderSilent();
+        for (INT y = p1.y; y < p2.y; y++)
+            for (INT x = p1.x; x < p2.x; x++)
+            {
+                INT py = (y - p1.y);
+                INT px = (x - p1.x);
+                auto surface = box->re.buffer[py * box->m_size.x + px].Char.UnicodeChar;
+                auto color = box->re.buffer[py * box->m_size.x + px].Attributes;
+                SetPixel(Vector2i(x, y), surface, color);
+            }
+
+        auto color = box->m_n16ColorBorder;
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
+
+        this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x - 1, pos.y + size.y - 1), 0x2502, color);
+
+        this->RenderLine(Vector2i(pos.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y + size.y), 0x2500, color);
+
+        this->RenderLine(Vector2i(pos.x + size.x, pos.y + size.y), Vector2i(pos.x + size.x, pos.y), 0x2502, color);
+
+        SetPixel(Vector2i(pos.x - 1, pos.y - 1), 0x256D, color);
+
+        //Right
+        SetPixel(Vector2i(pos.x + size.x, pos.y - 1), 0x256E, color);
+
+        //Left
+        SetPixel(Vector2i(pos.x - 1, pos.y + size.y), 0x2570, color);
+
+        //Bottom
+        SetPixel(pos + size, 0x256F, color);
     }
 
     VOID Panel::SetTitle(LPCWSTR title, SHORT color)

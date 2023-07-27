@@ -30,6 +30,7 @@
 #include <EventProcessor.hpp>
 #include <string>
 #include <TextBox.hpp>
+#include <InputBox.hpp>
 namespace ugr
 {
 	class Panel : public Renderer
@@ -48,6 +49,7 @@ namespace ugr
 		//VOID RenderPanel(Panel* p);
 
 		VOID RenderTextBox(TextBox* box);
+		VOID RenderInputBox(InputBox* box);
 
 		VOID SetTitle(LPCWSTR title, SHORT color = 0x0F);
 		VOID Display();
