@@ -43,15 +43,15 @@ namespace ugr
 		this->m_scrollbarPosition.y = 1;
 		this->m_nScrollBarHeight = size.y - 2;
 		this->m_nVisibleHeight = size.y;
-		this->re.buffer = new CHAR_INFO[this->m_size.x * this->m_size.y]{};
-		this->re.screen = size;
+		re.buffer = new CHAR_INFO[this->m_size.x * this->m_size.y]{};;
+		re.screen = this->m_size;
 		this->InitRenderer(re);
 	}
 	VOID TextBox::SetPosition(Vector2i pos)
 	{
 		this->m_pos = pos;
 	}
-	VOID TextBox::AddLine(LPCSTR str)
+	VOID TextBox::AddLine(LPCWSTR str)
 	{
 		this->m_vecLines.push_back(str);
 	}
@@ -61,6 +61,8 @@ namespace ugr
 	}
 	VOID TextBox::RenderSilent()
 	{
+		Vector2i p1 = this->m_pos;
+		Vector2i p2 = this->m_pos + this->m_size;
 		this->ClearScreen();
 		// Draw the visible lines
 		for (int y = 0; y < this->m_nVisibleHeight; y++)
@@ -68,7 +70,7 @@ namespace ugr
 			int lineIndex = y + this->m_nScrollPosition;
 			if (lineIndex >= 0 && lineIndex < static_cast<int>(this->m_vecLines.size()))
 			{
-				this->RenderText(Vector2i(0, y), this->m_vecLines[lineIndex].c_str());
+				this->RenderText(Vector2i(0, y), this->m_vecLines[lineIndex].c_str(), 0x0F);
 			}
 		}
 	}

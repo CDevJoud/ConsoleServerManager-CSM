@@ -38,20 +38,20 @@ namespace ugr
 		VOID Clean();
 		VOID CreateBox(Vector2i size);
 		VOID SetPosition(Vector2i pos);
-		VOID AddLine(LPCSTR str);
+		VOID AddLine(LPCWSTR str);
 		VOID SetTextBoxColor(SHORT color);
 		INT GetScrollPosition() const { return this->m_nScrollPosition; }
 		VOID MoveUp() { this->m_nScrollPosition--; }
 		VOID MoveDown() { this->m_nScrollPosition++; }
 		INT GetLinesSize() const { return m_vecLines.size(); }
 	private:
-		VOID RenderSilent();
+		VOID RenderSilent();		
 		friend class Panel;
 		Vector2i m_size;
 		RenderElements re;
 		Vector2i m_pos;
 
-		std::vector<std::string> m_vecLines;
+		std::vector<std::wstring> m_vecLines;
 		int m_nVisibleHeight; // Height of the visible region
 		int m_nScrollPosition = 0; // Current scroll position
 		SHORT m_n16Color = 0x00;
