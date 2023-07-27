@@ -30,6 +30,23 @@ namespace ugr
     {
         this->m_handleConsoleInput = CIN;
     }
+    SHORT EventProcessor::GetKeyBoardPressed()
+    {
+        DWORD mode;
+        GetConsoleMode(this->m_handleConsoleInput, &mode);
+        SetConsoleMode(this->m_handleConsoleInput, ~ENABLE_PROCESSED_INPUT);
+        DWORD numEventsRead;
+        INPUT_RECORD inputRecords[128];
+        
+        ReadConsoleInput(this->m_handleConsoleInput, inputRecords, 128, &numEventsRead);
+        for (DWORD i = 0; i < numEventsRead; i++)
+            if (inputRecords[i].EventType == KEY_EVENT && inputRecords[i].Event.KeyEvent.bKeyDown)
+            {
+                SHORT input = inputRecords[i].Event.KeyEvent.uChar.UnicodeChar;
+                return input;
+            }
+    }
+
     VOID EventProcessor::ProcessEvents()
     {
         //Handle KeyBoard Input
@@ -55,6 +72,8 @@ namespace ugr
             }
             this->m_OldKeyboardCondition[i] = this->m_NewKeyboardCondition[i];
         }
+
+        SetConsoleMode(this->m_handleConsoleInput, ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT | ENABLE_EXTENDED_FLAGS);
 
         //Handle Mouse Input
         INPUT_RECORD inBuf[32];

@@ -52,12 +52,15 @@ namespace ugr
 		KeyStrokesCondition Keyboard(INT ID) { return this->m_KeyboardCondition[ID]; }
 		Vector2i GetMousePos() const { return this->m_mousePos; }
 		KeyStrokesCondition Mouse(MouseType ID);
+
+		SHORT GetKeyBoardPressed();
 		VOID ProcessEvents();
 	protected:
 		VOID InitEventProcessor(HANDLE hConsoleInput);
 	private:
 		Vector2i m_mousePos;
 		HANDLE m_handleConsoleInput = nullptr;
-		
+		INPUT_RECORD mapKeys;
+		BOOL ShiftOn = FALSE;
 	};
 }
