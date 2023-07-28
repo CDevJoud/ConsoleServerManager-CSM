@@ -23,6 +23,8 @@
 // O---------------------------------------------------------------------------------O
 
 #pragma once
+#include <ws2tcpip.h>
+#include <winsock2.h>
 #include <Windows.h>
 #include <chrono>
 #include <Renderer.hpp>
