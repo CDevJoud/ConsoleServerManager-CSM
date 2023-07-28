@@ -23,7 +23,14 @@
 // O---------------------------------------------------------------------------------O
 
 #pragma once
+#define MAX_BUFFER_DATA 4096
+#define WIN32_LEAN_AND_MEAN
+#include <ws2tcpip.h>
+#include <winsock2.h>
 #include <State.hpp>
+#include <map>
+#pragma comment(lib, "Ws2_32.lib")
+#pragma warning(disable : 4996)
 
 using namespace ugr;
 namespace IExtreme::Application::CSM
@@ -33,14 +40,53 @@ namespace IExtreme::Application::CSM
 	public:
 		RemoteControl(UgrCGE* CGE);
 
+		//Overided Virtual Functions
+	public:
 		BOOL OnCreate();
 		BOOL OnUpdate();
 		BOOL OnRender();
 		BOOL Clean();
 	private:
+
+		struct RemoteControlPacket
+		{
+			INT size;
+			INT ID;
+			INT cmd;
+			CHAR data[MAX_BUFFER_DATA];
+		};
+
+		RemoteControlPacket* BuildRemoteControlPacket(INT ID, INT CMD, PSTR s1);
+
+		INT SendPacket(INT s, RemoteControlPacket* packet);
+		RemoteControlPacket* RecievePacket(INT s);
+		INT ConnectToServer(LPCSTR host, LPCSTR port);
+		VOID InitWindowSocket();
+		VOID ShutDownSocket(SOCKET SD);
+		INT RemoteControlAuthenticate(SOCKET sock, PSTR pass);
+		INT CleanIncoming(SOCKET s, INT size);
+
+		//VOID PrintPacket(RemoteControlPacket* packet);
+		//INT TerminalMode(SOCKET s);
+		//INT GetTerminalLine(PSTR buffer, INT size);
+		//INT RemoteControlCommand(SOCKET s, PSTR command);
+		INT m_nRemoteSocket;
+		BOOL RawOutput = TRUE;
+
+	private:
+		VOID CreateInputBoxes();
+	private:
 		TextBox* box = new TextBox;
 		InputBox input;
 		Panel* m_Panel = new Panel;
+		
+		Panel* m_ConnectPanel = new Panel;
+		std::map<std::string, InputBox*> m_mapInputs;
+
 		BOOL m_bFullScreen = TRUE;
+		PSTR host, pass, port;
+		BOOL m_IsConnected = FALSE;
+
+		BOOL m_bIsConnectionAlive = FALSE;
 	};
 }
