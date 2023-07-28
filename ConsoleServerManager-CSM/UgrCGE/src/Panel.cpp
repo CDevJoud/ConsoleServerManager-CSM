@@ -164,6 +164,10 @@ namespace ugr
     {
         auto pos = box->m_pos;
         auto size = box->m_size;
+        auto title = box->m_title;
+        auto titlecol = box->m_n16TitleColor;
+        auto color = box->m_n16ColorBorder;
+        box->m_posRelativeToConsole = this->m_vecPosition + pos;
 
         Vector2i p1 = pos;
         Vector2i p2 = pos + size;
@@ -178,8 +182,9 @@ namespace ugr
                 SetPixel(Vector2i(x, y), surface, color);
             }
 
-        auto color = box->m_n16ColorBorder;
+        
         this->SetUpFrame(pos, size, color);
+        this->RenderText(Vector2i(2 , pos.y - 1), title, titlecol);
     }
 
     VOID Panel::SetTitle(LPCWSTR title, SHORT color)
