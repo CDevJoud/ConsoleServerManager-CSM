@@ -49,8 +49,8 @@ namespace ugr
 	{
 		auto mousePos = EP->GetMousePos();
 		INT y1 = mousePos.y - 1;
-		INT y2 = m_pos.y;
-		if (mousePos.x >= this->m_pos.x && mousePos.x <= this->m_pos.x + this->m_size.x && y1 == y2)
+		INT y2 = m_posRelativeToConsole.y - 1;
+		if (mousePos.x >= this->m_posRelativeToConsole.x && mousePos.x <= (this->m_posRelativeToConsole.x + this->m_size.x) - 1 && y1 == y2)
 		{
 			if (EP->Mouse(EventProcessor::MouseType::Left).bStrokePressed)
 			{
@@ -81,6 +81,11 @@ namespace ugr
 	{
 		return m_bHasSumbited;
 	}
+	VOID InputBox::SetTitle(LPCWSTR t, SHORT col)
+	{
+		this->m_title = t;
+		this->m_n16TitleColor = col;
+	}
 	VOID InputBox::ProcessKeyInput()
 	{
 		SHORT c = _getch();
@@ -95,9 +100,14 @@ namespace ugr
 		{
 			this->m_bEnableInput = FALSE;
 			this->m_n16ColorBorder = 0x08;
+			this->ResetStrInput();
 		}
 		if (c == 13)
+		{
 			this->m_bHasSumbited = TRUE;
+			this->m_bEnableInput = FALSE;
+			this->m_n16ColorBorder = 0x08;
+		}
 		else
 			this->m_bHasSumbited = FALSE;
 		if (c == 127)

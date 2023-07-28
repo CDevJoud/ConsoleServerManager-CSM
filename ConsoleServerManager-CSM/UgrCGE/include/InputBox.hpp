@@ -42,6 +42,7 @@ namespace ugr
 		VOID ResetStrInput();
 		BOOL IsFocused() const;
 		BOOL Submited();
+		VOID SetTitle(LPCWSTR title, SHORT col);
 	private:
 		VOID ProcessKeyInput();
 		std::wstring m_strInput;
@@ -50,9 +51,12 @@ namespace ugr
 		friend class Panel;
 		Vector2i m_size;
 		Vector2i m_pos;
+		Vector2i m_posRelativeToConsole;
 		RenderElements re;
 		BOOL m_bEnableInput = FALSE;
 		BOOL m_bHasSumbited = FALSE;
+		LPCWSTR m_title;
+		SHORT m_n16TitleColor;
 		SHORT m_n16ColorBorder = 0x08;
 	};
 }
