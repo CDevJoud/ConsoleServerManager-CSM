@@ -47,7 +47,7 @@ namespace ugr
 	{
 		this->millisecond = millisecond;
 	}
-	VOID Renderer::SetPixel(Vector2i c, SHORT sur, SHORT col)
+	VOID Renderer::SetPixel(Vector2i c, SHORT sur, BYTE col)
     {
         if (c.x >= 0 && c.x < this->m_screen.x && c.y >= 0 && c.y < this->m_screen.y)
         {

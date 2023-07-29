@@ -48,7 +48,7 @@ namespace ugr
 		//Rendering Functions
 		VOID RenderPixelPixel(BOOL sw);
 		VOID SetRenderingCoolDown(DWORD millisecond);
-		VOID SetPixel(Vector2i cordinates, SHORT surface = 0x2588, SHORT col = 0x000F);
+		VOID SetPixel(Vector2i cordinates, SHORT surface = 0x2588, BYTE col = 0x0F);
 		
 
 		VOID RenderLine(Vector2i p1, Vector2i p2, SHORT surface = 0x2588, SHORT col = 0x000F);
