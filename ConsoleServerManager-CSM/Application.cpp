@@ -34,7 +34,7 @@ Application::Application()
 
 INT Application::Run()
 {
-	SetConsoleTitle(L"ConsoleServerManager v0.0.1");
+	SetConsoleTitle(L"ConsoleServerManager v0.1.0");
 	while (this->IsInit() && !this->m_states.top()->ToQuit())
 	{
 		this->ProcessEvents();
