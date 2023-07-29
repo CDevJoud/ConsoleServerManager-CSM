@@ -187,6 +187,27 @@ namespace ugr
         this->RenderText(Vector2i(2 , pos.y - 1), title, titlecol);
     }
 
+    VOID Panel::RenderButton(Button* btn)
+    {
+        auto pos = btn->m_pos;
+        auto size = btn->m_size;
+        auto title = btn->m_title;
+        auto titlecol = btn->m_n8TitleColor;
+        auto color = btn->m_n8Color;
+        if (btn->m_bIsHovering)
+        {
+            color = ~color;
+            titlecol = ~titlecol;
+        }
+            
+
+        btn->m_posRelativeToConsole = this->m_vecPosition + pos;
+
+        this->RenderLine(pos, Vector2i(pos.x + size.x - 1, pos.y + size.y), 0x2588, color);
+        this->RenderText(Vector2i(pos.x + (size.x / 2) - (lstrlenW(title) / 2), pos.y), title, titlecol);
+        //this->RenderText(Vector2i(1, 1), title, titlecol);
+    }
+
     VOID Panel::SetTitle(LPCWSTR title, SHORT color)
     {
         this->m_Paneltitle = title;

@@ -31,6 +31,7 @@
 #include <string>
 #include <TextBox.hpp>
 #include <InputBox.hpp>
+#include <Button.hpp>
 namespace ugr
 {
 	class Panel : public Renderer
@@ -50,6 +51,7 @@ namespace ugr
 
 		VOID RenderTextBox(TextBox* box);
 		VOID RenderInputBox(InputBox* box);
+		VOID RenderButton(Button* btn);
 
 		VOID SetTitle(LPCWSTR title, SHORT color = 0x0F);
 		VOID Display();
