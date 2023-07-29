@@ -45,7 +45,7 @@ namespace ugr
 	{
 		delete re.buffer;
 	}
-	VOID InputBox::ProcessEvent(EventProcessor* EP)
+	VOID InputBox::ProcessEvents(EventProcessor* EP)
 	{
 		auto mousePos = EP->GetMousePos();
 		INT y1 = mousePos.y - 1;

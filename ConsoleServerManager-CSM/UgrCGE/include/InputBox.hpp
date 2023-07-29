@@ -37,7 +37,7 @@ namespace ugr
 		VOID CreateBox(Vector2i size);
 		VOID SetPosition(Vector2i pos);
 		VOID Clean();
-		VOID ProcessEvent(EventProcessor* EP);
+		VOID ProcessEvents(EventProcessor* EP);
 		std::wstring GetStrInput() const;
 		VOID ResetStrInput();
 		BOOL IsFocused() const;
