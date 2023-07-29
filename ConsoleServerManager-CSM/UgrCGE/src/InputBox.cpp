@@ -65,9 +65,20 @@ namespace ugr
 		else
 			this->m_bHasSumbited = FALSE;
 	}
-	std::wstring InputBox::GetStrInput() const
+	std::wstring InputBox::GetStrInputW() const
 	{
 		return this->m_strInput;
+	}
+	std::string InputBox::GetStrInput() const
+	{
+		int size_needed = WideCharToMultiByte(CP_UTF8, 0, this->m_strInput.c_str(), -1, nullptr, 0, nullptr, nullptr);
+		std::string str(size_needed, 0);
+		WideCharToMultiByte(CP_UTF8, 0, this->m_strInput.c_str(), -1, &str[0], size_needed, nullptr, nullptr);
+		return str;
+	}
+	VOID InputBox::SetStrInput(LPCWSTR str)
+	{
+		this->m_strInput = str;
 	}
 	VOID InputBox::ResetStrInput()
 	{
@@ -80,6 +91,10 @@ namespace ugr
 	BOOL InputBox::Submited()
 	{
 		return m_bHasSumbited;
+	}
+	VOID InputBox::SetFlag(DWORD flag)
+	{
+		this->m_flags = flag;
 	}
 	VOID InputBox::SetTitle(LPCWSTR t, SHORT col)
 	{
@@ -102,7 +117,14 @@ namespace ugr
 			this->m_n16ColorBorder = 0x08;
 			this->ResetStrInput();
 		}
-		if (c == 13)
+		if (c == 13 && this->m_flags == 1)
+		{
+			this->m_bHasSumbited = TRUE;
+			this->m_n16ColorBorder = 0x0F;
+			//this->m_bEnableInput = FALSE;
+			
+		}
+		else if (c == 13)
 		{
 			this->m_bHasSumbited = TRUE;
 			this->m_bEnableInput = FALSE;

@@ -27,6 +27,7 @@
 #include <Renderer.hpp>
 #include <conio.h>
 #include <EventProcessor.hpp>
+#define DISABLE_INPUT_ON_RETURN 1
 
 namespace ugr
 {
@@ -38,12 +39,16 @@ namespace ugr
 		VOID SetPosition(Vector2i pos);
 		VOID Clean();
 		VOID ProcessEvents(EventProcessor* EP);
-		std::wstring GetStrInput() const;
+		std::wstring GetStrInputW() const;
+		std::string GetStrInput() const;
+		VOID SetStrInput(LPCWSTR str);
 		VOID ResetStrInput();
 		BOOL IsFocused() const;
 		BOOL Submited();
+		VOID SetFlag(DWORD flag);
 		VOID SetTitle(LPCWSTR title, SHORT col);
 	private:
+		DWORD m_flags;
 		VOID ProcessKeyInput();
 		std::wstring m_strInput;
 		VOID RenderSilent();
