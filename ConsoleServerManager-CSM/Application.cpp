@@ -34,6 +34,7 @@ Application::Application()
 
 INT Application::Run()
 {
+	SetConsoleTitle(L"ConsoleServerManager v0.0.1");
 	while (this->IsInit() && !this->m_states.top()->ToQuit())
 	{
 		this->ProcessEvents();
@@ -41,14 +42,16 @@ INT Application::Run()
 		if (!this->m_states.empty())
 			this->m_states.top()->OnUpdate();
 
-		SetConsoleTitle(std::to_wstring(this->GetFPS()).c_str());
-
-		this->ClearScreen();
+		this->ClearScreen(0x2591, 0x1F);
 		if (!this->m_states.empty())
 			this->m_states.top()->OnRender();
-		this->SetPixel(this->GetMousePos());
+		
+
+		this->SetPixel(this->GetMousePos(), 0x2588, 0x0F);
 		this->Display();
+		Sleep(0);
 	}
+	SetConsoleTitle(L"");
 	this->ClearScreen();
 	this->Display();
 	this->m_states.top()->Clean();
