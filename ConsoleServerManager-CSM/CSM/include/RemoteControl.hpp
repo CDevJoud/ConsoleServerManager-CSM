@@ -66,15 +66,15 @@ namespace IExtreme::Application::CSM
 		INT RemoteControlAuthenticate(SOCKET sock, PSTR pass);
 		INT CleanIncoming(SOCKET s, INT size);
 
-		//VOID PrintPacket(RemoteControlPacket* packet);
-		//INT TerminalMode(SOCKET s);
-		//INT GetTerminalLine(PSTR buffer, INT size);
-		//INT RemoteControlCommand(SOCKET s, PSTR command);
+		VOID PrintPacket(RemoteControlPacket* packet);
+		INT TerminalMode(SOCKET s);
+		INT RemoteControlCommand(SOCKET s, PSTR command);
 		INT m_nRemoteSocket;
 		BOOL RawOutput = TRUE;
 
 	private:
 		VOID CreateInputBoxes();
+		VOID CreateButtons();
 	private:
 		TextBox* box = new TextBox;
 		InputBox input;
@@ -82,11 +82,14 @@ namespace IExtreme::Application::CSM
 		
 		Panel* m_ConnectPanel = new Panel;
 		std::map<std::string, InputBox*> m_mapInputs;
+		std::map<std::string, Button*> m_mapBtn;
 
 		BOOL m_bFullScreen = TRUE;
-		PSTR host, pass, port;
+		std::string host, pass, port;
 		BOOL m_IsConnected = FALSE;
 
 		BOOL m_bIsConnectionAlive = FALSE;
+
+		FLOAT m_nRadius;
 	};
 }

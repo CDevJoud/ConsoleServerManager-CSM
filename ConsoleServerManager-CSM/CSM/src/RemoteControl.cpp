@@ -32,16 +32,20 @@ namespace IExtreme::Application::CSM
 	}
 	VOID RemoteControl::CreateInputBoxes()
 	{
+		this->host = "127.0.0.1";
+		this->port = "25575";
 		InputBox* inb0 = new InputBox;
 		inb0->CreateBox(Vector2i(40, 1));
 		inb0->SetPosition(Vector2i(2, 3));
 		inb0->SetTitle(L"{Enter Host}", 0x8F);
+		inb0->SetStrInput(L"127.0.0.1");
 		this->m_mapInputs.insert(std::pair<std::string, InputBox*>("Host", inb0));
 
 		InputBox* inb1 = new InputBox;
 		inb1->CreateBox(Vector2i(40, 1));
 		inb1->SetPosition(Vector2i(2, 7));
 		inb1->SetTitle(L"{Enter Port}", 0x8F);
+		inb1->SetStrInput(L"25575");
 		this->m_mapInputs.insert(std::pair<std::string, InputBox*>("Port", inb1));
 
 		InputBox* inb2 = new InputBox;
@@ -51,9 +55,24 @@ namespace IExtreme::Application::CSM
 		this->m_mapInputs.insert(std::pair<std::string, InputBox*>("Pass", inb2));
 
 	}
+	VOID RemoteControl::CreateButtons()
+	{
+		Button* btn0 = new Button;
+		btn0->SetTitle(L"<Submit>", 0xAF);
+		btn0->SetColor(0x0A);
+		btn0->SetPosition(Vector2i(2, 14));
+		this->m_mapBtn.insert(std::pair<std::string, Button*>("Submit", btn0));
+
+		Button* btn1 = new Button;
+		btn1->SetTitle(L"<Cancel>", 0xCF);
+		btn1->SetColor(0x0C);
+		btn1->SetPosition(Vector2i(30, 14));
+		this->m_mapBtn.insert(std::pair<std::string, Button*>("Cancel", btn1));
+	}
 	BOOL RemoteControl::OnCreate()
 	{
 		this->CreateInputBoxes();
+		this->CreateButtons();
 		this->m_Panel->CreatePanel(Vector2i(235, 73));
 		this->m_Panel->SetTitle(L"RemoteControl");
 		
@@ -63,10 +82,10 @@ namespace IExtreme::Application::CSM
 
 		this->input.CreateBox(Vector2i(230, 1));
 		this->input.SetPosition(Vector2i(1, 53));
+		this->input.SetFlag(DISABLE_INPUT_ON_RETURN);
 
 		this->box->CreateBox(Vector2i(230, 50));
 		this->box->SetPosition(Vector2i(1, 1));
-		this->box->AddLine(L"Enter Host:");
 		return TRUE;
 	}
 	BOOL RemoteControl::OnUpdate()
@@ -78,38 +97,52 @@ namespace IExtreme::Application::CSM
 			if (this->CGE->Keyboard(VK_PRIOR).bStrokeIsHeld && box->GetScrollPosition() > 0) for (INT i = 0; i < 10; i++) this->box->MoveUp();
 			if (this->CGE->Keyboard(VK_NEXT).bStrokeIsHeld && box->GetScrollPosition() < static_cast<int>(box->GetLinesSize() - 50)) for (INT i = 0; i < 10; i++) this->box->MoveDown();
 			
-			input.ProcessEvent(CGE);
-			if (input.Submited())
-			{
-				std::wstring cmd = input.GetStrInput();
-				if (cmd == L"exit()")
-					this->m_bQuit = TRUE;
-				this->input.ResetStrInput();
-			}
+			
+			this->TerminalMode(this->m_nRemoteSocket);
 		}
 		else
 		{
+			for (auto& i : this->m_mapBtn)
+			{
+				i.second->ProcessEvents(this->CGE);
+
+				if (i.second->IsClicked() && i.second->IsHovering())
+				{
+					if (i.first == "Cancel")
+						this->m_bQuit = TRUE;
+					if (i.first == "Submit")
+					{
+						this->InitWindowSocket();
+						this->m_nRemoteSocket = this->ConnectToServer(host.c_str(), port.c_str());
+						if(this->m_nRemoteSocket)
+							if (this->RemoteControlAuthenticate(this->m_nRemoteSocket, pass.data()))
+							{
+								this->m_IsConnected = TRUE;
+								this->box->AddLine(L"Logged In! Type exit to terminate. type cls to ClearScreen!");
+							}
+					}
+				}
+			}
 			for (auto& i : this->m_mapInputs)
 			{
-				i.second->ProcessEvent(this->CGE);
+				i.second->ProcessEvents(this->CGE);
 
 				if (i.second->Submited())
 				{
 					if (i.first == "Host")
 					{
-						std::wstring str = i.second->GetStrInput();
-						this->host = PSTR(str.c_str());
-						MessageBox(NULL, str.c_str(), L"Hi", MB_OK | MB_ICONINFORMATION);
+						std::string str = i.second->GetStrInput();
+						this->host = str.c_str();
 					}
 					if (i.first == "Port")
 					{
-						std::wstring str = i.second->GetStrInput();
-						this->host = PSTR(str.c_str());
+						std::string str = i.second->GetStrInput();
+						this->port = str.c_str();
 					}
 					if (i.first == "Pass")
 					{
-						std::wstring str = i.second->GetStrInput();
-						this->host = PSTR(str.c_str());
+						std::string str = i.second->GetStrInput();
+						this->pass = str.c_str();
 					}
 				}
 			}
@@ -136,8 +169,19 @@ namespace IExtreme::Application::CSM
 			for (auto& i : this->m_mapInputs)
 				this->m_ConnectPanel->RenderInputBox(i.second);
 
+			for (auto& i : this->m_mapBtn)
+				this->m_ConnectPanel->RenderButton(i.second);			
+
 			this->m_ConnectPanel->Display();
+
+			if (m_nRadius >= 150)
+				m_nRadius = 0;
+			else
+				++m_nRadius;
+			this->CGE->RenderCircle(Vector2i(240 / 2, 75 / 2), m_nRadius);
 			this->CGE->RenderPanel(*this->m_ConnectPanel);
+			
+			Sleep(10);
 		}
 
 		return TRUE;
@@ -150,6 +194,8 @@ namespace IExtreme::Application::CSM
 		delete this->m_ConnectPanel;
 		for (auto& i : this->m_mapInputs)
 			i.second->Clean();
+		for (auto& i : this->m_mapBtn)
+			delete i.second;
 		this->m_mapInputs.clear();
 		return TRUE;
 	}
@@ -239,7 +285,7 @@ namespace IExtreme::Application::CSM
 	}
 	INT RemoteControl::ConnectToServer(LPCSTR host, LPCSTR port)
 	{
-		SOCKET ss;
+		SOCKET ss = NULL;
 
 		struct addrinfo hint;
 		struct addrinfo* serverInfo, *pServerInfo;
@@ -289,6 +335,76 @@ namespace IExtreme::Application::CSM
 			this->m_bIsConnectionAlive = FALSE;
 		}
 		return ret;
+	}
+
+	VOID RemoteControl::PrintPacket(RemoteControlPacket* packet)
+	{
+		std::wstring str;
+		for (INT i = 0; packet->data[i] != 0; ++i)
+		{
+			if (packet->data[i] != 0x0A)
+			{
+				str.push_back(packet->data[i]);
+			}
+			else
+			{
+				this->box->AddLine(str.c_str());
+				str = L"";
+			}
+		}
+	}
+
+	INT RemoteControl::TerminalMode(SOCKET s)
+	{
+		input.ProcessEvents(CGE);
+		if (!this->m_bIsConnectionAlive)
+		{
+			if (this->input.Submited())
+			{
+				std::wstring cmd = input.GetStrInputW();
+
+				if (cmd == L"exit")
+					this->m_IsConnected = FALSE;
+
+				if (cmd == L"cls")
+					this->box->ResetTextBox();
+
+				if (cmd == L"stop")
+					this->m_IsConnected = FALSE;
+
+				if (!this->m_bIsConnectionAlive)
+					this->RemoteControlCommand(s, (PSTR)input.GetStrInput().c_str());
+
+				this->box->AddLine(cmd.c_str());
+				input.ResetStrInput();
+			}
+		}
+		return 0;
+	}
+
+	INT RemoteControl::RemoteControlCommand(SOCKET s, PSTR command)
+	{
+		RemoteControlPacket* packet = this->BuildRemoteControlPacket(0x10, 2, command);
+		if (packet == NULL)
+		{
+			this->m_bIsConnectionAlive = 0;
+			return 0;
+		}
+
+		this->SendPacket(s, packet);
+
+		packet = this->RecievePacket(s);
+
+		if (packet == NULL)
+			return 0;
+
+		if (packet->ID != 0x10)
+			return 0;
+
+		if (packet->size > 10)
+			this->PrintPacket(packet);
+
+		return 1;
 	}
 	
 	VOID RemoteControl::ShutDownSocket(SOCKET SD)
