@@ -58,6 +58,9 @@ namespace ugr
 		VOID Display();
 		
 		VOID ShutDownCGE();
+
+		CHAR_INFO* GetConsoleBuffer() { return this->m_bufferScreen; }
+		CHAR_INFO GetPixel(Vector2i pos) const;
 	private:
 		VOID SetUpFrame(Vector2i pos, Vector2i size, SHORT color);
 		HANDLE m_handleConsole = NULL;

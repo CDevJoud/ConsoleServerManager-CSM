@@ -233,6 +233,11 @@ namespace ugr
         CloseHandle(this->m_handleConsoleInput);
     }
 
+    CHAR_INFO UgrCGE::GetPixel(Vector2i pos) const
+    {
+        return this->m_bufferScreen[pos.x * this->m_screen.x + pos.x];
+    }
+
     VOID UgrCGE::SetUpFrame(Vector2i pos, Vector2i size, SHORT color)
     {
         this->RenderLine(Vector2i(pos.x - 1, pos.y - 1), Vector2i(pos.x + size.x - 1, pos.y - 1), 0x2500, color);
