@@ -31,6 +31,17 @@ namespace IExtreme::Application::CSM
 	{
 		
 	}
+	RemoteControl::~RemoteControl()
+	{
+		delete this->box;
+		delete this->m_Panel;
+		delete this->m_ConnectPanel;
+		for (auto& i : this->m_mapInputs)
+			delete i.second;
+		for (auto& i : this->m_mapBtn)
+			delete i.second;
+		this->m_mapInputs.clear();
+	}
 	VOID RemoteControl::CreateInputBoxes()
 	{
 		this->host = "127.0.0.1";
@@ -187,7 +198,7 @@ namespace IExtreme::Application::CSM
 
 		return TRUE;
 	}
-	BOOL RemoteControl::Clean()
+	/*BOOL RemoteControl::Clean()
 	{
 		delete this->box;
 		delete this->m_Panel;
@@ -198,7 +209,7 @@ namespace IExtreme::Application::CSM
 			delete i.second;
 		this->m_mapInputs.clear();
 		return TRUE;
-	}
+	}*/
 	
 	
 	///

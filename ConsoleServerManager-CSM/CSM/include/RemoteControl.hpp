@@ -39,13 +39,14 @@ namespace IExtreme::Application::CSM
 	{
 	public:
 		RemoteControl(ugr::ConsoleWindow* CGE);
+		~RemoteControl();
 
 		//Overided Virtual Functions
 	public:
 		int OnCreate();
 		int OnUpdate();
 		int OnRender();
-		int Clean();
+		//int Clean();
 	private:
 
 		struct RemoteControlPacket
