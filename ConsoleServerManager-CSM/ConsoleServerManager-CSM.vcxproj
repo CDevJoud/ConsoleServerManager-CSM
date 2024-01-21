@@ -163,11 +163,13 @@
     <ClCompile Include="CSM\src\State.cpp" />
     <ClCompile Include="CSM\src\RemoteControl.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="CSM\src\MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="CSM\include\State.hpp" />
     <ClInclude Include="CSM\include\RemoteControl.hpp" />
+    <ClInclude Include="CSM\include\MainMenu.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
