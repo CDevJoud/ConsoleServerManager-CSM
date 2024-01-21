@@ -27,7 +27,7 @@
 
 namespace IExtreme::Application::CSM
 {
-
+	
 	class State
 	{
 	public:
@@ -36,7 +36,7 @@ namespace IExtreme::Application::CSM
 		virtual ugr::BOOL OnCreate() = 0;
 		virtual ugr::BOOL OnUpdate() = 0;
 		virtual ugr::BOOL OnRender() = 0;
-		virtual ugr::BOOL Clean() = 0;
+		//virtual ugr::BOOL Clean() = 0;
 
 		ugr::BOOL ToQuit() const;
 	protected:
