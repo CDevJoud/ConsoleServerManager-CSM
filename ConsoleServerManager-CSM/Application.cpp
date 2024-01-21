@@ -28,8 +28,17 @@ Application::Application()
 {
 	this->InitConsoleWindow();
 	this->CreateConsoleBufferWindow(ugr::Vector2i(240, 75), ugr::Vector2i(8, 14));
-	this->m_states.push(new IExtreme::Application::CSM::RemoteControl(this));
+	this->m_states.push(std::make_unique<IExtreme::Application::CSM::MainMenu, ugr::ConsoleWindow*>(this));
 	this->m_states.top()->OnCreate();
+}
+
+Application::~Application()
+{
+	SetConsoleTitle(L"");
+	this->ClearScreen();
+	this->Display();
+	this->m_states.pop();
+	this->ShutDown();
 }
 
 INT Application::Run()
@@ -45,19 +54,10 @@ INT Application::Run()
 		this->ClearScreen(0x2591, 0x1F);
 		if (!this->m_states.empty())
 			this->m_states.top()->OnRender();
-		
 
 		this->SetPixel(this->GetMousePos(), 0x2588, 0x0F);
 		this->Display();
 		Sleep(0);
 	}
-	SetConsoleTitle(L"");
-	this->ClearScreen();
-	this->Display();
-	this->m_states.top()->Clean();
-	delete this->m_states.top();
-	this->m_states.pop();
-	this->ShutDown();
 	return EXIT_SUCCESS;
-	return 1;
 }

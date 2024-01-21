@@ -24,14 +24,21 @@
 
 #pragma once
 #include <RemoteControl.hpp>
+#include <MainMenu.hpp>
 #include <stack>
+#include <memory>
 
 class Application : private ugr::ConsoleWindow
 {
 public:
 	Application();
+	~Application();
 	INT Run();
 private:
 	ugr::Panel MainMenu;
-	std::stack<IExtreme::Application::CSM::State*> m_states;
+	//As we know stack is a dynamic container which mean everything will remain on the heap
+	//but in this case we are storing the objects as a smart pointer to avoid getting object slicing.
+	//The State class is 24 bytes and for ex RemoteControl class is 288, if we would to store it
+	//we would lose data
+	std::stack<std::unique_ptr<IExtreme::Application::CSM::State>> m_states;
 };
