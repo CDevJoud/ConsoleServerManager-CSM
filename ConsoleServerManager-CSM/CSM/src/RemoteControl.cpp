@@ -23,18 +23,19 @@
 // O---------------------------------------------------------------------------------O
 
 #include <RemoteControl.hpp>
+using namespace ugr;
 
 namespace IExtreme::Application::CSM
 {
-	RemoteControl::RemoteControl(UgrCGE* CGE) : State(CGE)
+	RemoteControl::RemoteControl(ugr::ConsoleWindow* CGE) : State(CGE)
 	{
-
+		
 	}
 	VOID RemoteControl::CreateInputBoxes()
 	{
 		this->host = "127.0.0.1";
 		this->port = "25575";
-		InputBox* inb0 = new InputBox;
+		ugr::InputBox* inb0 = new ugr::InputBox;
 		inb0->CreateBox(Vector2i(40, 1));
 		inb0->SetPosition(Vector2i(2, 3));
 		inb0->SetTitle(L"{Enter Host}", 0x8F);
@@ -76,13 +77,13 @@ namespace IExtreme::Application::CSM
 		this->m_Panel->CreatePanel(Vector2i(235, 73));
 		this->m_Panel->SetTitle(L"RemoteControl");
 		
-		this->m_ConnectPanel->CreatePanel(Vector2i(45, 15));
+		this->m_ConnectPanel->CreatePanel(Vector2i(45, 16));
 		this->m_ConnectPanel->SetPosition(Vector2i(240 / 2 - 22, 75 / 2 - 7));
 		this->m_ConnectPanel->SetTitle(L"Connect To RemoteControl", 0x0A);
 
 		this->input.CreateBox(Vector2i(230, 1));
 		this->input.SetPosition(Vector2i(1, 53));
-		this->input.SetFlag(DISABLE_INPUT_ON_RETURN);
+		this->input.SetFlag(ENABLE_INPUT_ON_RETURN);
 
 		this->box->CreateBox(Vector2i(230, 50));
 		this->box->SetPosition(Vector2i(1, 1));
@@ -160,7 +161,7 @@ namespace IExtreme::Application::CSM
 			this->m_Panel->RenderInputBox(&input);
 			this->m_Panel->Display();
 
-			this->CGE->RenderPanel(*this->m_Panel);
+			this->CGE->RenderPanel(this->m_Panel);
 		}
 		else
 		{
@@ -179,7 +180,7 @@ namespace IExtreme::Application::CSM
 			else
 				++m_nRadius;
 			this->CGE->RenderCircle(Vector2i(240 / 2, 75 / 2), m_nRadius);
-			this->CGE->RenderPanel(*this->m_ConnectPanel);
+			this->CGE->RenderPanel(this->m_ConnectPanel);
 			
 			Sleep(10);
 		}
@@ -188,12 +189,11 @@ namespace IExtreme::Application::CSM
 	}
 	BOOL RemoteControl::Clean()
 	{
-		input.Clean();
-		box->Clean();
+		delete this->box;
 		delete this->m_Panel;
 		delete this->m_ConnectPanel;
 		for (auto& i : this->m_mapInputs)
-			i.second->Clean();
+			delete i.second;
 		for (auto& i : this->m_mapBtn)
 			delete i.second;
 		this->m_mapInputs.clear();
@@ -283,7 +283,7 @@ namespace IExtreme::Application::CSM
 		}
 		return &packet;
 	}
-	INT RemoteControl::ConnectToServer(LPCSTR host, LPCSTR port)
+	INT RemoteControl::ConnectToServer(ugr::LPCSTR host, ugr::LPCSTR port)
 	{
 		SOCKET ss = NULL;
 
@@ -373,7 +373,7 @@ namespace IExtreme::Application::CSM
 					this->m_IsConnected = FALSE;
 
 				if (!this->m_bIsConnectionAlive)
-					this->RemoteControlCommand(s, (PSTR)input.GetStrInput().c_str());
+					this->RemoteControlCommand(s, (PSTR)input.GetStrInput());
 
 				this->box->AddLine(cmd.c_str());
 				input.ResetStrInput();

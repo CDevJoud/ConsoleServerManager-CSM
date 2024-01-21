@@ -23,23 +23,24 @@
 // O---------------------------------------------------------------------------------O
 
 #pragma once
-#include <Ugarit.hpp>
-using namespace ugr;
+#include <UgrCGL.hpp>
+
 namespace IExtreme::Application::CSM
 {
+
 	class State
 	{
 	public:
-		State(ugr::UgrCGE* CGE);
+		State(ugr::ConsoleWindow* CGE);
 
-		virtual BOOL OnCreate() = 0;
-		virtual BOOL OnUpdate() = 0;
-		virtual BOOL OnRender() = 0;
-		virtual BOOL Clean() = 0;
+		virtual ugr::BOOL OnCreate() = 0;
+		virtual ugr::BOOL OnUpdate() = 0;
+		virtual ugr::BOOL OnRender() = 0;
+		virtual ugr::BOOL Clean() = 0;
 
-		BOOL ToQuit() const;
+		ugr::BOOL ToQuit() const;
 	protected:
-		BOOL m_bQuit = FALSE;
-		ugr::UgrCGE* CGE = NULL;
+		ugr::BOOL m_bQuit = FALSE;
+		ugr::ConsoleWindow* CGE = NULL;
 	};
 }

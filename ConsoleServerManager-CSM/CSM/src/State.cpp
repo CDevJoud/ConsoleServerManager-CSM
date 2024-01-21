@@ -26,10 +26,10 @@
 
 namespace IExtreme::Application::CSM
 {
-	State::State(ugr::UgrCGE* CGE) : CGE(CGE)
+	State::State(ugr::ConsoleWindow* CGE) : CGE(CGE)
 	{
 	}
-	BOOL State::ToQuit() const
+	ugr::BOOL State::ToQuit() const
 	{
 		return this->m_bQuit;
 	}

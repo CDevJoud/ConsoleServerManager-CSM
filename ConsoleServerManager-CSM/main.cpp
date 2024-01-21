@@ -22,9 +22,10 @@
 // |  SOFTWARE.																		 |
 // O---------------------------------------------------------------------------------O
 
+#define WIN32_LEAN_AND_MEAN
 #include "Application.hpp"
 
-INT main()
+int main()
 {
 	Application app;
 	return app.Run();

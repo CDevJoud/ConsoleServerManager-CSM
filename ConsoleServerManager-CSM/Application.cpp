@@ -27,7 +27,7 @@
 Application::Application()
 {
 	this->InitConsoleWindow();
-	this->CreateConsoleBufferWindow(Vector2i(240, 75), Vector2i(8, 14));
+	this->CreateConsoleBufferWindow(ugr::Vector2i(240, 75), ugr::Vector2i(8, 14));
 	this->m_states.push(new IExtreme::Application::CSM::RemoteControl(this));
 	this->m_states.top()->OnCreate();
 }
@@ -35,7 +35,7 @@ Application::Application()
 INT Application::Run()
 {
 	SetConsoleTitle(L"ConsoleServerManager v0.1.0");
-	while (this->IsInit() && !this->m_states.top()->ToQuit())
+	while (!this->m_states.top()->ToQuit())
 	{
 		this->ProcessEvents();
 		this->ProcessFPS();
@@ -57,6 +57,7 @@ INT Application::Run()
 	this->m_states.top()->Clean();
 	delete this->m_states.top();
 	this->m_states.pop();
-	this->ShutDownCGE();
+	this->ShutDown();
 	return EXIT_SUCCESS;
+	return 1;
 }

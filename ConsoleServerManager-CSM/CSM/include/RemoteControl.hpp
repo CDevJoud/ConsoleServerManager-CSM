@@ -24,71 +24,71 @@
 
 #pragma once
 #define MAX_BUFFER_DATA 4096
-#define WIN32_LEAN_AND_MEAN
 #include <ws2tcpip.h>
 #include <winsock2.h>
 #include <State.hpp>
+#include <string>
 #include <map>
 #pragma comment(lib, "Ws2_32.lib")
 #pragma warning(disable : 4996)
 
-using namespace ugr;
 namespace IExtreme::Application::CSM
 {
+	
 	class RemoteControl : public State
 	{
 	public:
-		RemoteControl(UgrCGE* CGE);
+		RemoteControl(ugr::ConsoleWindow* CGE);
 
 		//Overided Virtual Functions
 	public:
-		BOOL OnCreate();
-		BOOL OnUpdate();
-		BOOL OnRender();
-		BOOL Clean();
+		int OnCreate();
+		int OnUpdate();
+		int OnRender();
+		int Clean();
 	private:
 
 		struct RemoteControlPacket
 		{
-			INT size;
-			INT ID;
-			INT cmd;
-			CHAR data[MAX_BUFFER_DATA];
+			int size;
+			int ID;
+			int cmd;
+			ugr::CHAR data[MAX_BUFFER_DATA];
 		};
 
 		RemoteControlPacket* BuildRemoteControlPacket(INT ID, INT CMD, PSTR s1);
 
-		INT SendPacket(INT s, RemoteControlPacket* packet);
+		ugr::INT SendPacket(ugr::INT s, RemoteControlPacket* packet);
 		RemoteControlPacket* RecievePacket(INT s);
-		INT ConnectToServer(LPCSTR host, LPCSTR port);
+		int ConnectToServer(ugr::LPCSTR host, ugr::LPCSTR port);
 		VOID InitWindowSocket();
 		VOID ShutDownSocket(SOCKET SD);
-		INT RemoteControlAuthenticate(SOCKET sock, PSTR pass);
-		INT CleanIncoming(SOCKET s, INT size);
+		int RemoteControlAuthenticate(SOCKET sock, PSTR pass);
+		int CleanIncoming(SOCKET s, INT size);
 
 		VOID PrintPacket(RemoteControlPacket* packet);
-		INT TerminalMode(SOCKET s);
-		INT RemoteControlCommand(SOCKET s, PSTR command);
-		INT m_nRemoteSocket;
-		BOOL RawOutput = TRUE;
+		int TerminalMode(SOCKET s);
+		int RemoteControlCommand(SOCKET s, PSTR command);
+		int m_nRemoteSocket;
+		ugr::BOOL RawOutput = TRUE;
 
 	private:
 		VOID CreateInputBoxes();
 		VOID CreateButtons();
 	private:
-		TextBox* box = new TextBox;
-		InputBox input;
-		Panel* m_Panel = new Panel;
+		ugr::TextBox* box = new ugr::TextBox;
+		ugr::InputBox input;
+		ugr::Panel* m_Panel = new ugr::Panel;
 		
-		Panel* m_ConnectPanel = new Panel;
-		std::map<std::string, InputBox*> m_mapInputs;
-		std::map<std::string, Button*> m_mapBtn;
+		ugr::Panel* m_ConnectPanel = new ugr::Panel;
+		std::map<std::string, ugr::InputBox*> m_mapInputs;
+		std::map<std::string, ugr::Button*> m_mapBtn;
 
-		BOOL m_bFullScreen = TRUE;
+		ugr::BOOL m_bFullScreen = TRUE;
 		std::string host, pass, port;
-		BOOL m_IsConnected = FALSE;
+		ugr::BOOL m_IsConnected = FALSE;
 
-		BOOL m_bIsConnectionAlive = FALSE;
+		ugr::BOOL m_bIsConnectionAlive = FALSE;
 
 		FLOAT m_nRadius;
 	};
