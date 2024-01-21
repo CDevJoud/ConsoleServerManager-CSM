@@ -156,7 +156,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="UgrCGE\src\Button.cpp" />
     <ClCompile Include="CSM\src\State.cpp" />
     <ClCompile Include="CSM\src\RemoteControl.cpp" />
     <ClCompile Include="UgrCGE\src\InputBox.cpp" />
@@ -171,15 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
-    <ClInclude Include="UgrCGE\include\Button.hpp" />
     <ClInclude Include="CSM\include\State.hpp" />
     <ClInclude Include="CSM\include\RemoteControl.hpp" />
-    <ClInclude Include="UgrCGE\include\InputBox.hpp" />
     <ClInclude Include="UgrCGE\include\TextBox.hpp" />
-    <ClInclude Include="UgrCGE\include\EventProcessor.hpp" />
-    <ClInclude Include="UgrCGE\include\Menu.hpp" />
-    <ClInclude Include="UgrCGE\include\Panel.hpp" />
-    <ClInclude Include="UgrCGE\include\Renderer.hpp" />
     <ClInclude Include="UgrCGE\include\Shape.hpp" />
     <ClInclude Include="UgrCGE\include\Ugarit.hpp" />
     <ClInclude Include="UgrCGE\include\Vector.hpp" />

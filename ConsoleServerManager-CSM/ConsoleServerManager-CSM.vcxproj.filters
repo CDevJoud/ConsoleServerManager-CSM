@@ -51,14 +51,8 @@
     <ClCompile Include="UgrCGE\src\InputBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UgrCGE\src\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UgrCGE\include\Renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UgrCGE\include\Shape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -71,15 +65,6 @@
     <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UgrCGE\include\Panel.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UgrCGE\include\Menu.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UgrCGE\include\EventProcessor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CSM\include\State.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,12 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UgrCGE\include\TextBox.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UgrCGE\include\InputBox.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UgrCGE\include\Button.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
