@@ -1,7 +1,7 @@
 // O------------------------------------LICENSE--------------------------------------O
 // |  MIT License																	 |
 // |  																				 |
-// |  Copyright(c) 2023 Joud Kandeel												 |
+// |  Copyright(c) 2023-2024 Joud Kandeel											 |
 // |  																				 |
 // |  Permission is hereby granted, free of charge, to any person obtaining a copy	 |
 // |  of this software and associated documentation files(the "Software"), to deal	 |
@@ -10,7 +10,7 @@
 // |  copies of the Software, and to permit persons to whom the Software is			 |
 // |  furnished to do so, subject to the following conditions :						 |
 // |  																				 |
-// |  The above copyright noticeand this permission notice shall be included in all	 |
+// |  The above copyright notice and this permission notice shall be included in all |
 // |  copies or substantial portions of the Software.								 |
 // |  																				 |
 // |  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR	 |
@@ -37,17 +37,20 @@ Application::~Application()
 	SetConsoleTitle(L"");
 	this->ClearScreen();
 	this->Display();
-	this->m_states.pop();
 	this->ShutDown();
 }
 
 INT Application::Run()
 {
 	SetConsoleTitle(L"ConsoleServerManager v0.1.0");
-	while (!this->m_states.top()->ToQuit())
+	while (this->m_bLoop)
 	{
 		this->ProcessEvents();
 		this->ProcessFPS();
+		if (this->m_states.top()->ToQuit())
+		{
+			this->ManageStates(this->m_states.top()->ExitVal());
+		}
 		if (!this->m_states.empty())
 			this->m_states.top()->OnUpdate();
 
@@ -60,4 +63,28 @@ INT Application::Run()
 		Sleep(0);
 	}
 	return EXIT_SUCCESS;
+}
+
+VOID Application::ManageStates(IExtreme::Application::CSM::State::ExitState s)
+{
+	switch (s)
+	{
+	case IExtreme::Application::CSM::State::ExitState::None:
+
+		break;
+	case IExtreme::Application::CSM::State::ExitState::MainMenu:
+
+		break;
+	case IExtreme::Application::CSM::State::ExitState::RemoteControl:
+		this->m_states.pop();
+		this->m_states.push(std::make_unique<IExtreme::Application::CSM::RemoteControl, ugr::ConsoleWindow*>(this));
+		this->m_states.top()->OnCreate();
+		break;
+	case IExtreme::Application::CSM::State::ExitState::Exit:
+		this->m_states.pop();
+		this->m_bLoop = FALSE;
+		break;
+	default:
+		break;
+	}
 }
