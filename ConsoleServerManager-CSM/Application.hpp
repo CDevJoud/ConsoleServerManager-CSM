@@ -24,7 +24,7 @@
 
 #pragma once
 #include <RemoteControl.hpp>
-#include <MainMenu.hpp>
+#include <ProMainMenu.hpp>
 #include <stack>
 #include <memory>
 

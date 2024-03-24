@@ -75,7 +75,7 @@ VOID Application::ManageStates(IExtreme::Application::CSM::State::ExitState s)
 		break;
 	case IExtreme::Application::CSM::State::ExitState::MainMenu:
 		this->m_states.pop();
-		this->m_states.push(std::make_unique<IExtreme::Application::CSM::MainMenu, ugr::ConsoleWindow*>(this));
+		this->m_states.push(std::make_unique<IExtreme::Application::CSM::ProMainMenu, ugr::ConsoleWindow*>(this));
 		this->m_states.top()->OnCreate();
 		break;
 	case IExtreme::Application::CSM::State::ExitState::RemoteControl:
