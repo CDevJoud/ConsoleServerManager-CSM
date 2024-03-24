@@ -26,21 +26,64 @@
 #include <vector>
 #include <State.hpp>
 #include <memory>
+#include <string>
+#include <fstream>
+#include <strstream>
+#include <map>
+#pragma warning(disable:4996)
 using namespace ugr;
 
 namespace IExtreme::Application::CSM
 {
-	struct Vertex
+	typedef struct Vertex
 	{
 		float x, y, z;
-	};
+	}Vector3f;
 	struct Triangle
 	{
 		Vertex p[3]{};
+		CharPixel cp;
 	};
 	struct Mesh
 	{
 		std::vector<Triangle> tris;
+
+		bool LoadFromObjectFile(std::string sFilename)
+		{
+			std::ifstream f(sFilename);
+			if (!f.is_open())
+				return false;
+
+			// Local cache of verts
+			std::vector<Vector3f> verts;
+
+			while (!f.eof())
+			{
+				char line[128];
+				f.getline(line, 128);
+
+				std::strstream s;
+				s << line;
+
+				char junk;
+
+				if (line[0] == 'v')
+				{
+					Vector3f v;
+					s >> junk >> v.x >> v.y >> v.z;
+					verts.push_back(v);
+				}
+
+				if (line[0] == 'f')
+				{
+					int f[3];
+					s >> junk >> f[0] >> f[1] >> f[2];
+					tris.push_back({ verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] });
+				}
+			}
+
+			return true;
+		}
 	};
 	struct Matrix
 	{
@@ -61,11 +104,16 @@ namespace IExtreme::Application::CSM
 	private:
 		ExitState es;
 		void RenderMesh(Mesh& m);
+		void InitButtons();
+		void InitInputs();
 
 		Mesh obj;
 		Matrix PP;
 		std::unique_ptr<Panel> panel;
+		std::map<std::string, ugr::InputBox*> m_mapInputs;
+		std::vector<Button*> btns;
 		Vector2i panSize;
+		Vector3f vCamera;
 	};
 }
 
