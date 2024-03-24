@@ -121,7 +121,10 @@ namespace IExtreme::Application::CSM
 				if (i.second->IsClicked() && i.second->IsHovering())
 				{
 					if (i.first == "Cancel")
+					{
 						this->m_bQuit = TRUE;
+						this->es = State::ExitState::MainMenu;
+					}
 					if (i.first == "Submit")
 					{
 						this->InitWindowSocket();
@@ -200,7 +203,7 @@ namespace IExtreme::Application::CSM
 	}
 	State::ExitState RemoteControl::ExitVal()
 	{
-		return ExitState();
+		return this->es;
 	}
 	/*BOOL RemoteControl::Clean()
 	{

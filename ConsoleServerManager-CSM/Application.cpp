@@ -28,7 +28,8 @@ Application::Application()
 {
 	this->InitConsoleWindow();
 	this->CreateConsoleBufferWindow(ugr::Vector2i(240, 75), ugr::Vector2i(8, 14));
-	this->m_states.push(std::make_unique<IExtreme::Application::CSM::MainMenu, ugr::ConsoleWindow*>(this));
+	//this->m_states.push(std::make_unique<IExtreme::Application::CSM::MainMenu, ugr::ConsoleWindow*>(this));
+	this->m_states.push(std::make_unique<IExtreme::Application::CSM::RemoteControl, ugr::ConsoleWindow*>(this));
 	this->m_states.top()->OnCreate();
 }
 
@@ -73,7 +74,9 @@ VOID Application::ManageStates(IExtreme::Application::CSM::State::ExitState s)
 
 		break;
 	case IExtreme::Application::CSM::State::ExitState::MainMenu:
-
+		this->m_states.pop();
+		this->m_states.push(std::make_unique<IExtreme::Application::CSM::MainMenu, ugr::ConsoleWindow*>(this));
+		this->m_states.top()->OnCreate();
 		break;
 	case IExtreme::Application::CSM::State::ExitState::RemoteControl:
 		this->m_states.pop();

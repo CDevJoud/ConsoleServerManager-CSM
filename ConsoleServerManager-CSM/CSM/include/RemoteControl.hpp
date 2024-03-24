@@ -49,7 +49,7 @@ namespace IExtreme::Application::CSM
 		ExitState ExitVal();
 		//int Clean();
 	private:
-
+		ExitState es;
 		struct RemoteControlPacket
 		{
 			int size;

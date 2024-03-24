@@ -27,7 +27,7 @@
     <ClCompile Include="CSM\src\RemoteControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSM\src\MainMenu.cpp">
+    <ClCompile Include="CSM\src\ProMainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="CSM\include\RemoteControl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSM\include\MainMenu.hpp">
+    <ClInclude Include="CSM\include\ProMainMenu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
